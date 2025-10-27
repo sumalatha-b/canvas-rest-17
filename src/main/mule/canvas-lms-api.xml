@@ -219,4 +219,18 @@ output application/json --- payload default error.description]]]></http:body>
         </ee:transform>
         <canvas:post-sections-id-crosslist-new-course-id doc:name="Section - Cross-list a section" doc:id="0930fa2a-c9e4-4e4a-8353-719b06c2ef5c" config-ref="Canvas_Config" idUriParam="#[vars.id]" newCourseIdUriParam="#[vars.new_course_id]" />
     </flow>
+	<flow name="useflow" doc:id="808178ef-bcc9-4816-b734-b649724f78a9" >
+		<http:listener doc:name="Listener" doc:id="ba0a5746-0cda-42e4-8d0f-f4e336ef1c9b" config-ref="canvas-lms-api-httpListenerConfig" path="/v1/users/{user_id}/courses" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message" doc:id="1d8437fe-9a88-4293-ad1a-4298baf1bf1a" >
+			<ee:variables >
+				<ee:set-variable variableName="user_id" ><![CDATA[attributes.uriParams.'user_id']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<canvas:get-users-user-id-courses doc:name="Course - List courses for a user" doc:id="7fee2a99-f891-4cdb-9f7e-cd6faf78ee3d" config-ref="Canvas_Config" userIdUriParam="11806455&amp;&amp;5" />
+	</flow>
 </mule>
