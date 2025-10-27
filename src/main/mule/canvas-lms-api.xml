@@ -27,7 +27,7 @@
         <error-handler ref="Global-Error-Handler" />
     </flow>
     <flow name="put:\courses\(id):application\json:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="9949cd55-f6b6-4c96-b99f-35c2b64c0dac" config-ref="HTTP_Listener_config" path="/courses/{id}" />
+        <http:listener doc:name="Listener" doc:id="9949cd55-f6b6-4c96-b99f-35c2b64c0dac" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}" />
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
