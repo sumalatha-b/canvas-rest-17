@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:canvas="http://www.mulesoft.org/schema/mule/canvas" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:canvaslms="http://www.mulesoft.org/schema/mule/canvaslms" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
-http://www.mulesoft.org/schema/mule/canvaslms http://www.mulesoft.org/schema/mule/canvaslms/current/mule-canvaslms.xsd
-http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
-http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
-    
-	<flow name="canvas-lms-api-main">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:canvas="http://www.mulesoft.org/schema/mule/canvas" xmlns:canvaslms="http://www.mulesoft.org/schema/mule/canvaslms" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/canvaslms http://www.mulesoft.org/schema/mule/canvaslms/current/mule-canvaslms.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
+    <flow name="canvas-lms-api-main">
         <http:listener config-ref="canvas-lms-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
@@ -15,7 +11,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="canvas-lms-api-config" />
-		<error-handler ref="Global-Error-Handler" />
+        <error-handler ref="Global-Error-Handler" />
     </flow>
     <flow name="canvas-lms-api-console">
         <http:listener config-ref="canvas-lms-api-httpListenerConfig" path="/console/*">
@@ -28,15 +24,16 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="canvas-lms-api-config" />
-		<error-handler ref="Global-Error-Handler" />
+        <error-handler ref="Global-Error-Handler" />
     </flow>
     <flow name="put:\courses\(id):application\json:canvas-lms-api-config">
+        <http:listener doc:name="Listener" doc:id="9949cd55-f6b6-4c96-b99f-35c2b64c0dac" config-ref="HTTP_Listener_config" path="/courses/{id}" />
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:put-courses-id doc:name="Course - Update a course" doc:id="5ef5ce9e-4b09-489c-9a4c-86e25975a925" config-ref="Canvas_Config" idUriParam="#[vars.id]"/>
+        <canvas:put-courses-id doc:name="Course - Update a course" doc:id="5ef5ce9e-4b09-489c-9a4c-86e25975a925" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
     <flow name="put:\sections\(id):application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -44,7 +41,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:put-sections-id doc:name="Section - Edit a section" doc:id="97db6289-387c-4b2a-a0f4-31d7455913bd" config-ref="Canvas_Config" idUriParam="#[vars.id]"/>
+        <canvas:put-sections-id doc:name="Section - Edit a section" doc:id="97db6289-387c-4b2a-a0f4-31d7455913bd" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
     <flow name="put:\users\(id):application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -52,15 +49,15 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:put-users-id doc:name="User - Edit a user" doc:id="6a82d831-265a-4036-bab2-8290c37683f8" config-ref="Canvas_Config" idUriParam="#[vars.id]"/>
+        <canvas:put-users-id doc:name="User - Edit a user" doc:id="6a82d831-265a-4036-bab2-8290c37683f8" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
-	<flow name="delete:\courses\(id):canvas-lms-api-config">
+    <flow name="delete:\courses\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="2e185e35-bffa-4ad6-972d-f986ee55fe8e" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam='conclude'/>
+        <canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="2e185e35-bffa-4ad6-972d-f986ee55fe8e" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam="conclude" />
     </flow>
     <flow name="delete:\sections\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -68,7 +65,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:delete-sections-id doc:name="Section - Delete a section" doc:id="4d938bf6-bf29-42dd-ab45-3ca718f1aae9" config-ref="Canvas_Config" idUriParam="#[vars.id]"/>
+        <canvas:delete-sections-id doc:name="Section - Delete a section" doc:id="4d938bf6-bf29-42dd-ab45-3ca718f1aae9" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
     <flow name="delete:\sections\(id)\crosslist:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -76,7 +73,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:delete-sections-id-crosslist doc:name="Section - De-cross-list a section" doc:id="ecccf39a-f939-4bc4-b4c5-5ce82bcb5036" config-ref="Canvas_Config" idUriParam="#[vars.id]"/>
+        <canvas:delete-sections-id-crosslist doc:name="Section - De-cross-list a section" doc:id="ecccf39a-f939-4bc4-b4c5-5ce82bcb5036" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
     <flow name="get:\accounts\(account_id)\users:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -84,7 +81,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-accounts-account-id-users doc:name="User - List users in account" doc:id="5a6fc3bd-94d6-4ec9-a503-415a9736eb89" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]"/>
+        <canvas:get-accounts-account-id-users doc:name="User - List users in account" doc:id="5a6fc3bd-94d6-4ec9-a503-415a9736eb89" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" />
     </flow>
     <flow name="get:\courses\(course_id)\bulk_user_progress:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -92,7 +89,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-courses-course-id-bulk-user-progress doc:name="Course - Get bulk user progress" doc:id="15ca92e3-2289-4517-903b-f4bc59e604c3" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]"/>
+        <canvas:get-courses-course-id-bulk-user-progress doc:name="Course - Get bulk user progress" doc:id="15ca92e3-2289-4517-903b-f4bc59e604c3" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" />
     </flow>
     <flow name="get:\courses\(course_id)\search_users:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -100,7 +97,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-courses-course-id-search-users doc:name="Course - List users in course" doc:id="37c463b1-d290-4535-873d-c9ce2b4efed2" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]"/>
+        <canvas:get-courses-course-id-search-users doc:name="Course - List users in course" doc:id="37c463b1-d290-4535-873d-c9ce2b4efed2" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" />
     </flow>
     <flow name="get:\courses\(course_id)\sections:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -108,7 +105,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-courses-course-id-sections doc:name="Section - List course sections" doc:id="07ac8da6-5851-4c22-be31-b01b71dd2a89" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]"/>
+        <canvas:get-courses-course-id-sections doc:name="Section - List course sections" doc:id="07ac8da6-5851-4c22-be31-b01b71dd2a89" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" />
     </flow>
     <flow name="get:\courses\(course_id)\sections\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -117,7 +114,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-courses-course-id-sections-id doc:name="Section - Get section information" doc:id="9833b463-3630-4ee5-bb0e-8b697e1c9ebe" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]"/>
+        <canvas:get-courses-course-id-sections-id doc:name="Section - Get section information" doc:id="9833b463-3630-4ee5-bb0e-8b697e1c9ebe" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]" />
     </flow>
     <flow name="get:\courses\(course_id)\users\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -126,7 +123,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-courses-course-id-users-id doc:name="Course - Get single user" doc:id="e1d51fc0-faf8-4f90-9214-5c8c17764a52" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]"/>
+        <canvas:get-courses-course-id-users-id doc:name="Course - Get single user" doc:id="e1d51fc0-faf8-4f90-9214-5c8c17764a52" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]" />
     </flow>
     <flow name="get:\courses\(course_id)\users\(user_id)\progress:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -135,7 +132,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-courses-course-id-users-user-id-progress doc:name="Course - Get user progress" doc:id="99e09fef-2990-4679-8fc9-ae0297a3958e" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" userIdUriParam="#[vars.user_id]"/>
+        <canvas:get-courses-course-id-users-user-id-progress doc:name="Course - Get user progress" doc:id="99e09fef-2990-4679-8fc9-ae0297a3958e" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" userIdUriParam="#[vars.user_id]" />
     </flow>
     <flow name="get:\courses\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -143,10 +140,10 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-courses-id doc:name="Course - Get a single course" doc:id="deb041f8-e414-4ae1-bc77-65862bc95445" config-ref="Canvas_Config" idUriParam="#[vars.id]"/>
+        <canvas:get-courses-id doc:name="Course - Get a single course" doc:id="deb041f8-e414-4ae1-bc77-65862bc95445" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
     <flow name="get:\users\self\upcoming_events:canvas-lms-api-config">
-		<canvas:get-users-self-upcoming-events doc:name="User - List upcoming assignments, calendar events" doc:id="fcd6ed5a-1b24-49a5-b53f-67e78e90ceda" config-ref="Canvas_Config"/>
+        <canvas:get-users-self-upcoming-events doc:name="User - List upcoming assignments, calendar events" doc:id="fcd6ed5a-1b24-49a5-b53f-67e78e90ceda" config-ref="Canvas_Config" />
     </flow>
     <flow name="get:\users\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -154,7 +151,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-users-id doc:name="User - Show user details" doc:id="a8f9d602-8dc1-4cb0-8844-e98f017e0270" config-ref="Canvas_Config" idUriParam="#[vars.id]"/>
+        <canvas:get-users-id doc:name="User - Show user details" doc:id="a8f9d602-8dc1-4cb0-8844-e98f017e0270" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
     <flow name="get:\users\(user_id)\courses:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -162,7 +159,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-users-user-id-courses doc:name="Course - List courses for a user" doc:id="4c593d63-7a66-4eae-8b75-d2e39855d2a1" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]"/>
+        <canvas:get-users-user-id-courses doc:name="Course - List courses for a user" doc:id="4c593d63-7a66-4eae-8b75-d2e39855d2a1" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" />
     </flow>
     <flow name="get:\users\(user_id)\missing_submissions:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -170,7 +167,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-users-user-id-missing-submissions doc:name="User - List Missing Submissions" doc:id="816c58f4-b7b9-498d-9229-1a8cb19aa6a0" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" includeQueryParam="COURSE" filterQueryParam="SUBMITTABLE"/>
+        <canvas:get-users-user-id-missing-submissions doc:name="User - List Missing Submissions" doc:id="816c58f4-b7b9-498d-9229-1a8cb19aa6a0" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" includeQueryParam="COURSE" filterQueryParam="SUBMITTABLE" />
     </flow>
     <flow name="post:\accounts\(account_id)\courses:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -178,7 +175,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="c4731fd4-f0b6-44e8-93c9-f5bed5cab41f" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]"/>
+        <canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="c4731fd4-f0b6-44e8-93c9-f5bed5cab41f" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" />
     </flow>
     <flow name="post:\accounts\(account_id)\users:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -186,7 +183,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:post-accounts-account-id-users doc:name="User - Create a user" doc:id="7bbcf6fc-df5e-4db4-81cf-b657aa0b1f33" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]"/>
+        <canvas:post-accounts-account-id-users doc:name="User - Create a user" doc:id="7bbcf6fc-df5e-4db4-81cf-b657aa0b1f33" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" />
     </flow>
     <flow name="post:\courses\(course_id)\sections:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -194,7 +191,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:post-courses-course-id-sections doc:name="Section - Create course section" doc:id="480c38c7-5104-4432-aefa-7978ea660d2b" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]"/>
+        <canvas:post-courses-course-id-sections doc:name="Section - Create course section" doc:id="480c38c7-5104-4432-aefa-7978ea660d2b" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" />
     </flow>
     <flow name="post:\sections\(id)\crosslist\(new_course_id):application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -203,6 +200,6 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
                 <ee:set-variable variableName="new_course_id">attributes.uriParams.'new_course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:post-sections-id-crosslist-new-course-id doc:name="Section - Cross-list a section" doc:id="0930fa2a-c9e4-4e4a-8353-719b06c2ef5c" config-ref="Canvas_Config" idUriParam="#[vars.id]" newCourseIdUriParam="#[vars.new_course_id]"/>
+        <canvas:post-sections-id-crosslist-new-course-id doc:name="Section - Cross-list a section" doc:id="0930fa2a-c9e4-4e4a-8353-719b06c2ef5c" config-ref="Canvas_Config" idUriParam="#[vars.id]" newCourseIdUriParam="#[vars.new_course_id]" />
     </flow>
 </mule>

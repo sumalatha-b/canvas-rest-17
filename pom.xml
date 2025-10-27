@@ -56,15 +56,15 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>57a49eeb-906b-45be-acf5-deb2e88a1380</groupId>
-			<artifactId>canvas-lms-api</artifactId>
-			<version>1.0.4-BETA</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
 			<groupId>com.mulesoft.connectors</groupId>
 			<artifactId>mule-salesforce-connector</artifactId>
 			<version>10.20.0</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>57a49eeb-906b-45be-acf5-deb2e88a1380</groupId>
+			<artifactId>canvas-lms-api</artifactId>
+			<version>1.0.6-BETA</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>

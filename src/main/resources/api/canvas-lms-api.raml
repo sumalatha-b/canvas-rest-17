@@ -1,7 +1,11 @@
 #%RAML 1.0
-title: canvas-lms-api
+title: Canvas
 version: v1
+protocols: HTTPS
 baseUri: https://canvas.instructure.com/api/v1
+description: Canvas LMS is a cloud-based learning management system that allows educators to create and manage courses, assignments, quizzes, and student communication in a flexible and user-friendly platform.
+mediaType:
+  - application/json
 
 securitySchemes:
   Authorization:
@@ -18,8 +22,8 @@ securitySchemes:
           description: Unauthorized
 securedBy:
   - Authorization
-
-
+traits:
+  errorResponse: !include /traits/errorResponse-trait.raml
 types:
   User: !include /datatypes/users/users-dataType.raml
   Courses: !include /datatypes/courses/courses-dataType.raml
@@ -42,8 +46,6 @@ types:
   
   createUserReq: !include /datatypes/users/createUserRequest-dataType.raml
   createUserRes: !include /datatypes/users/createUserResponse-dataType.raml
-  
-  
   SectionReq: !include /datatypes/sections/sectionRequest-dataType.raml
   SectionRes: !include /datatypes/sections/sectionResponse-dataType.raml
   sectionCrosslistReq: !include /datatypes/sections/sectionCrosslistReq-dataType.raml
@@ -56,11 +58,12 @@ types:
 /users/{id}:
   uriParameters:
     id:
-      type: integer
+      type: string
       required: true
-      example: 118064555
+      example: "118064555"
   get:
-    displayName: Get user details by ID
+    is: [errorResponse]
+    displayName: User - Show user details
     description: Get user details by ID
     responses:
       200:
@@ -69,7 +72,8 @@ types:
             type: User
             example: !include /examples/users/users-example.json
   put:
-    displayName: Update user by ID
+    is: [errorResponse]
+    displayName: User - Edit a user
     description: Modify an existing user.
     body:
       application/json:
@@ -84,11 +88,12 @@ types:
 /courses/{id}:
   uriParameters:
     id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   get:
-    displayName: Get courses by ID
+    is: [errorResponse]
+    displayName: Course - Get a single course
     description: Get courses by ID
     responses:
       200:
@@ -97,7 +102,8 @@ types:
             type: Courses
             example: !include /examples/courses/courses-example.json
   delete:
-    displayName: Delete course
+    is: [errorResponse]
+    displayName: Course - Delete/Conclude a course
     description: Delete course
     queryParameters:
       event:
@@ -110,7 +116,8 @@ types:
           application/json:
             example: !include /examples/courses/deleteCourse-example.json
   put:
-    displayName: Update course
+    is: [errorResponse]
+    displayName: Course - Update a course
     description: Update course
     body:
       application/json:
@@ -126,11 +133,12 @@ types:
 /accounts/{account_id}/courses:
   uriParameters:
     account_id:
-      type: integer
+      type: string
       required: true
-      example: 81259
+      example: "81259"
   post:
-    displayName: Create course 
+    is: [errorResponse]
+    displayName: Course - Create a new course
     description: Create course
     body:
       application/json:
@@ -142,17 +150,16 @@ types:
           application/json:
             type: createCourseRes
             example: !include /examples/courses/createCourseResponse-example.json
-  
-     
      
 /accounts/{account_id}/users:
   uriParameters:
     account_id:
-      type: integer
+      type: string
       required: true
-      example: 81259
+      example: "81259"
   get:
-    displayName: List users in account
+    is: [errorResponse]
+    displayName: User - List users in account
     description: List users in account
     responses:
       200:
@@ -161,7 +168,8 @@ types:
             type: accountUser 
             example: !include /examples/accountUsers/accountUser-example.json
   post:
-    displayName: Create user
+    is: [errorResponse]
+    displayName: User - Create a user
     description: Create and return a new user and pseudonym for an account.
     body:
       application/json:
@@ -176,7 +184,8 @@ types:
             example: !include /examples/users/createUserResponse-example.json
 /users/self/upcoming_events:
   get:
-    displayName: upcoming Events
+    is: [errorResponse]
+    displayName: User - List upcoming assignments, calendar events
     description: upcoming Events
     responses:
       200:
@@ -187,11 +196,12 @@ types:
 /users/{user_id}/missing_submissions:
   uriParameters:
     user_id:
-      type: integer
+      type: string
       required: true
-      example: 81259
+      example: "81259"
   get:
-    displayName: list Missing Submission
+    is: [errorResponse]
+    displayName: User - List Missing Submissions
     description: list Missing Submission
     queryParameters:
       user_id?: string
@@ -212,11 +222,12 @@ types:
 /courses/{course_id}/search_users:
   uriParameters:
     course_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   get:
-    displayName: list Users in Course
+    is: [errorResponse]
+    displayName: Course - List users in course
     description: list Users in Course
     queryParameters:
       search_term?: string
@@ -245,15 +256,16 @@ types:
 /courses/{course_id}/users/{id}:
   uriParameters:
     course_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
     id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   get:
-    displayName: get single user
+    is: [errorResponse]
+    displayName: Course - Get single user
     description: get single user
     responses:
       200:
@@ -264,11 +276,12 @@ types:
 /users/{user_id}/courses:
   uriParameters:
     user_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   get:
-    displayName: List courses for a user
+    is: [errorResponse]
+    displayName: Course - List courses for a user
     description: List courses for a user
     responses:
       200:
@@ -280,15 +293,16 @@ types:
 /courses/{course_id}/users/{user_id}/progress:
   uriParameters:
     course_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
     user_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   get:
-    displayName: Get user progress
+    is: [errorResponse]
+    displayName: Course - Get user progress
     description: Get user progress
     responses:
       200:
@@ -299,11 +313,12 @@ types:
 /courses/{course_id}/bulk_user_progress:
   uriParameters:
     course_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   get:
-    displayName: Get bulk user progress
+    is: [errorResponse]
+    displayName: Course - Get bulk user progress
     description: Get bulk user progress
     responses:
       200:
@@ -311,22 +326,16 @@ types:
           application/json:
             type: coursebulkuserprogress
             example: !include /examples/courses/courseBulkUserProgress-example.json
-
- 
-
-            
-  
- 
-            
  
 /courses/{course_id}/sections:
   uriParameters:
     course_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   get:
-    displayName: List course sections
+    is: [errorResponse]
+    displayName: Section - List course sections
     description: Returns a paginated list of sections for a course
     queryParameters:
       include:
@@ -344,7 +353,8 @@ types:
             type: section
             example: !include /examples/sections/sections-example.json
   post:
-    displayName: Create Section
+    is: [errorResponse]
+    displayName: Section - Create course section
     description: Creates a new section for this course.
     body:
       application/json:
@@ -360,15 +370,16 @@ types:
 /courses/{course_id}/sections/{id}:
   uriParameters:
     course_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
     id:
-      type: integer
+      type: string
       required: true
-      example: 11949585
+      example: "11949585"
   get:
-    displayName: Get section information
+    is: [errorResponse]
+    displayName: Section - Get section information
     description: Get details about a specific section by course and section ID
     queryParameters:
       include:
@@ -381,38 +392,16 @@ types:
           application/json:
             type: section
             example: !include /examples/sections/sections-example.json
-
-
-  
-   
-   
-
-
-  
-
-
-
-
-              
-
-
-
-
-
-
-
-
-      
-
    
 /sections/{id}/crosslist:
   uriParameters:
     id:
-      type: integer
+      type: string
       required: true
-      example: 81259
+      example: "81259"
   delete:
-    displayName: De-cross-list a section
+    is: [errorResponse]
+    displayName: Section - De-cross-list a section
     description: De-cross-list a section
     queryParameters:
       override_sis_stickiness?: boolean
@@ -425,11 +414,12 @@ types:
 /sections/{id}:
   uriParameters:
     id:
-      type: integer
+      type: string
       required: true
-      example: 81259
+      example: "81259"
   delete:
-    displayName: Delete a section
+    is: [errorResponse]
+    displayName: Section - Delete a section
     description: Delete a section
     responses:
       200:
@@ -438,7 +428,8 @@ types:
             type: deleteSections
             example: !include /examples/sections/deleteSections-example.json
   put:
-    displayName: Update a Section
+    is: [errorResponse]
+    displayName: Section - Edit a section
     description: Modify an existing section.
     body:
       application/json:
@@ -451,27 +442,20 @@ types:
           application/json:
             type: updateSectionRes
             example: !include /examples/sections/updateSectionResponse-example.json
-
-
- 
-
-
-    
-    
-
     
 /sections/{id}/crosslist/{new_course_id}:
   uriParameters:
     id:
-      type: integer
+      type: string
       required: true
-      example: 11949585
+      example: "11949585"
     new_course_id:
-      type: integer
+      type: string
       required: true
-      example: 12635863
+      example: "12635863"
   post:
-    displayName: Cross-list Section
+    is: [errorResponse]
+    displayName: Section - Cross-list a section
     description: Move the section to another course. The new course must belong to the same root account.
     body:
       application/json:
