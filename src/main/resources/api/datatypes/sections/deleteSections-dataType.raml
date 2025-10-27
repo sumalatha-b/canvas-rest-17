@@ -1,0 +1,15 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  name: string
+  sis_section_id?: string
+  integration_id?: string
+  sis_import_id?: integer
+  course_id: integer
+  sis_course_id?: string
+  start_at?: datetime
+  end_at?: datetime | nil
+  restrict_enrollments_to_section_dates?: string | nil
+  nonxlist_course_id?: integer | nil
+  total_students?: integer

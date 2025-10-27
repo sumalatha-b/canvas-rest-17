@@ -1,0 +1,44 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  name?: string
+  account_id: integer
+  uuid?: string
+  start_at?: datetime
+  grading_standard_id?: integer | nil
+  is_public?: boolean
+  created_at?: datetime
+  allow_student_forum_attachments?: boolean
+  course_code?: string
+  default_view?: string
+  root_account_id?: integer
+  enrollment_term_id?: integer
+  open_enrollment?: boolean
+  allow_wiki_comments?: boolean
+  self_enrollment?: boolean
+  license?: string
+  restrict_enrollments_to_course_dates?: boolean
+  public_description?: string
+  grade_passback_setting?: string
+  end_at?: datetime
+  public_syllabus?: boolean
+  public_syllabus_to_auth?: boolean
+  storage_quota_mb?: integer
+  is_public_to_auth_users: boolean
+  homeroom_course?: boolean
+  course_color?: string | nil
+  friendly_name?: string | nil
+  hide_final_grades?: boolean
+  apply_assignment_group_weights?: boolean
+  calendar?:
+    type: object
+    properties:
+      ics: string
+  time_zone: string
+  blueprint: boolean
+  template: boolean
+  sis_course_id?: string | nil
+  integration_id?: string | nil
+  workflow_state?: string
+  course_format?: string

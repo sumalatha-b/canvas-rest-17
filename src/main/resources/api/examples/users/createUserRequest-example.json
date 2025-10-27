@@ -1,0 +1,33 @@
+{
+  "user": {
+    "name": "Sheldon Cooper",
+    "short_name": "Shelly",
+    "sortable_name": "Cooper, Sheldon",
+    "time_zone": "America/Denver",
+    "locale": "tlh",
+    "terms_of_use": true,
+    "skip_registration": false
+  },
+  "pseudonym": {
+    "unique_id": "sheldon@caltech.example.com",
+    "password": "P@ssw0rd123",
+    "sis_user_id": "SHEL93921",
+    "integration_id": "ABC59802",
+    "send_confirmation": true,
+    "force_self_registration": false,
+    "authentication_provider_id": "ldap_provider_1"
+  },
+  "communication_channel": {
+    "type": "email",
+    "address": "sheldon@caltech.example.com",
+    "confirmation_url": false,
+    "skip_confirmation": false
+  },
+  "force_validations": true,
+  "enable_sis_reactivation": false,
+  "destination": "https://canvas.example.com/home",
+  "initial_enrollment_type": "observer",
+  "pairing_code": {
+    "code": "PARENT1234"
+  }
+}

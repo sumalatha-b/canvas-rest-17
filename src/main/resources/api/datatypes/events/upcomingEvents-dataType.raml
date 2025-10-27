@@ -1,0 +1,48 @@
+#%RAML 1.0 DataType
+type: array
+items:
+  type: object
+  properties:
+    id: string | integer
+    title?: string
+    description?: string | nil
+    start_at?: datetime
+    end_at?: datetime
+    location_name?: string
+    location_address?: string
+    all_day?: boolean
+    all_day_date?: string | nil
+    created_at?: datetime
+    updated_at?: datetime
+    workflow_state?: string
+    context_code?: string
+    child_events_count?: integer
+    child_events?: array
+    parent_event_id?: string | integer | nil
+    hidden?: boolean
+    url?: string
+    html_url?: string
+    assignment?: 
+      type: object
+      properties:
+        id: integer
+        name?: string
+        description?: string | nil
+        points_possible?: number
+        due_at?: datetime
+        assignment_group_id?: integer
+        automatic_peer_reviews?: boolean
+        grade_group_students_individually?: boolean | nil
+        grading_standard_id?: integer | nil
+        grading_type?: string
+        group_category_id?: integer | nil
+        lock_at?: datetime | nil
+        peer_reviews?: boolean
+        position?: integer
+        unlock_at?: datetime | nil
+        course_id?: integer
+        submission_types?:
+          type: array
+          items: string
+        needs_grading_count?: integer
+        html_url?: string

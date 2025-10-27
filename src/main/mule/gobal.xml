@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:canvas="http://www.mulesoft.org/schema/mule/canvas"
+	xmlns:canvas-rest-lms="http://www.mulesoft.org/schema/mule/canvas-rest-lms"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/canvas-rest-lms http://www.mulesoft.org/schema/mule/canvas-rest-lms/current/mule-canvas-rest-lms.xsd
+http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
+<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="57ac21b4-aed7-497b-b683-b4a8f0681b10" >
+		<salesforce:basic-connection username="aurosmit.sahoo@nexturn.com.lms.educloud" password="Aurosmit@2001" securityToken="wEpfQlYMXv8VvhsNwrGqlptQl"/>
+	</salesforce:sfdc-config>
+		<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="828ca4aa-5437-4f65-a203-ea8758ccb2e0" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<http:listener-config name="canvas-lms-api-httpListenerConfig">
+        <http:listener-connection host="${https.host}" port="${https.port}" protocol="HTTPS">
+			<tls:context >
+				<tls:key-store type="jks" path="Client-Keystore.jks" keyPassword="Mule12345" password="Mule12345" />
+			</tls:context>
+		</http:listener-connection>
+    </http:listener-config>
+    <apikit:config name="canvas-lms-api-config" api="canvas-lms-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<configuration-properties doc:name="Configuration properties" doc:id="e5dddb1f-64af-4c93-9632-f326a933a339" file="config.yaml" />
+	<configuration doc:name="Configuration" doc:id="e9e914ec-58c4-47a5-80c5-10e21d8d3ebf" defaultErrorHandler-ref="Global-Error-Handler" />
+	<canvas:config name="Canvas_Config" doc:name="Canvas Config" doc:id="69c01e25-1023-4c58-aeb9-265571d5fa40" >
+		<canvas:authorization-connection authorizationHeader="Bearer 7~TP4z7mkKvmWAtWWQTCA6eMGCtTGJEy9ZcAv8UGJBNvTCc4yQGr6MD8H4arERB8HQ" />
+	</canvas:config>
+</mule>

@@ -1,0 +1,21 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id:
+    type: integer
+    required: true
+  name:
+    type: string
+    required: true
+  sis_section_id?: string
+  integration_id?: string
+  start_at?: datetime
+  end_at?: datetime
+  restrict_enrollments_to_section_dates?: boolean
+  created_at?: datetime
+  course_id:
+    type: integer
+    required: true
+  nonxlist_course_id?: integer | nil
+  sis_import_id?: integer | nil
+  root_account_id?: integer

@@ -1,0 +1,22 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  name: string
+  sortable_name?: string
+  last_name?: string
+  first_name?: string
+  short_name?: string
+  sis_user_id?: string | nil
+  sis_import_id?: integer | nil
+  integration_id?: string | nil
+  login_id: string
+  avatar_url?: string
+  avatar_state?: string
+  enrollments?: any | nil
+  email?: string
+  locale?: string
+  last_login?: datetime
+  time_zone?: string
+  bio?: string
+  pronouns?: string

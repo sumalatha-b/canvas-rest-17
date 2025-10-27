@@ -1,0 +1,11 @@
+{
+  "course_section": {
+    "name": "Updated Section Name",
+    "sis_section_id": "s34643",
+    "integration_id": "3452342345",
+    "start_at": "2025-09-01T01:00:00Z",
+    "end_at": "2025-12-15T23:59:59Z",
+    "restrict_enrollments_to_section_dates": true
+  },
+  "override_sis_stickiness": false
+}

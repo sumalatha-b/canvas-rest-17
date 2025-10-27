@@ -1,0 +1,19 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  name: string
+  created_at: datetime
+  sortable_name: string
+  short_name: string
+  avatar_url: string
+  last_name: string
+  first_name: string
+  locale?: string | nil
+  effective_locale: string
+  permissions:
+    type: object
+    properties:
+      can_update_name: boolean
+      can_update_avatar: boolean
+      limit_parent_app_web_access: boolean

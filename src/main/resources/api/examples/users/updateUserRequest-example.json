@@ -1,0 +1,19 @@
+{
+  "user": {
+    "name": "Sheldon Cooper",
+    "short_name": "Shelly",
+    "sortable_name": "Cooper, Sheldon",
+    "time_zone": "Pacific Time (US & Canada)",
+    "email": "sheldon@example.com",
+    "locale": "en",
+    "avatar": {
+      "token": "opaque_token"
+    },
+    "title": "Dr.",
+    "bio": "Theoretical physicist at Caltech.",
+    "pronunciation": "Shell-don",
+    "pronouns": "he/him",
+    "event": "unsuspend"
+  },
+  "override_sis_stickiness": true
+}

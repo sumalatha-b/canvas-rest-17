@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "display_name": "Test Student 1",
+    "avatar_image_url": "https://<canvas>/images/messages/avatar-50.png",
+    "html_url": "https://<canvas>/courses/1/users/1",
+    "pronouns": null,
+    "progress": {
+      "requirement_count": 2,
+      "requirement_completed_count": 1,
+      "next_requirement_url": "https://<canvas>/courses/<course_id>/modules/items/<item_id>",
+      "completed_at": null
+    }
+  },
+  {
+    "id": 2,
+    "display_name": "Test Student 2",
+    "avatar_image_url": "https://<canvas>/images/messages/avatar-50.png",
+    "html_url": "https://<canvas>/courses/1/users/2",
+    "pronouns": null,
+    "progress": {
+      "requirement_count": 2,
+      "requirement_completed_count": 2,
+      "next_requirement_url": null,
+      "completed_at": "2021-08-10T16:26:08Z"
+    }
+  }
+]

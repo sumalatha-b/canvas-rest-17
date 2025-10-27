@@ -1,0 +1,17 @@
+{
+    "id": 118064555,
+    "name": "Aurosmit Sahoo",
+    "created_at": "2025-08-08T04:07:23-06:00",
+    "sortable_name": "Sahoo, Aurosmit",
+    "short_name": "Aurosmit Sahoo",
+    "avatar_url": "https://canvas.instructure.com/images/messages/avatar-50.png",
+    "last_name": "Sahoo",
+    "first_name": "Aurosmit",
+    "locale": null,
+    "effective_locale": "en",
+    "permissions": {
+        "can_update_name": true,
+        "can_update_avatar": true,
+        "limit_parent_app_web_access": false
+    }
+}

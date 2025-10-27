@@ -1,0 +1,142 @@
+[
+    {
+        "id": 12703035,
+        "name": "Java",
+        "account_id": 81259,
+        "uuid": "lOITnGFZR4Rq3Iq7s5awdQwHwREcVH0JTPsGy6Si",
+        "start_at": "2025-09-01T08:00:00Z",
+        "grading_standard_id": null,
+        "is_public": false,
+        "created_at": "2025-08-28T13:40:50Z",
+        "course_code": "NC101",
+        "default_view": "modules",
+        "root_account_id": 10,
+        "enrollment_term_id": 1,
+        "license": "cc_by_nc",
+        "grade_passback_setting": "nightly_sync",
+        "end_at": "2026-05-15T17:00:00Z",
+        "public_syllabus": false,
+        "public_syllabus_to_auth": false,
+        "storage_quota_mb": 500,
+        "is_public_to_auth_users": false,
+        "homeroom_course": false,
+        "course_color": null,
+        "friendly_name": null,
+        "apply_assignment_group_weights": true,
+        "calendar": {
+            "ics": "https://canvas.instructure.com/feeds/calendars/course_lOITnGFZR4Rq3Iq7s5awdQwHwREcVH0JTPsGy6Si.ics"
+        },
+        "time_zone": "America/Denver",
+        "blueprint": false,
+        "template": false,
+        "sis_course_id": null,
+        "integration_id": null,
+        "enrollments": [
+            {
+                "type": "teacher",
+                "role": "TeacherEnrollment",
+                "role_id": 994,
+                "user_id": 118064555,
+                "enrollment_state": "active",
+                "limit_privileges_to_course_section": false
+            }
+        ],
+        "hide_final_grades": false,
+        "workflow_state": "available",
+        "course_format": "online",
+        "restrict_enrollments_to_course_dates": true
+    },
+    {
+        "id": 12635863,
+        "name": "science",
+        "account_id": 81259,
+        "uuid": "aP94gB2vYO9wEL1l3J7sU3KseHxef3UUvDa6zfnb",
+        "start_at": null,
+        "grading_standard_id": null,
+        "is_public": false,
+        "created_at": "2025-08-19T10:48:34Z",
+        "course_code": "science",
+        "default_view": "modules",
+        "root_account_id": 10,
+        "enrollment_term_id": 1,
+        "license": null,
+        "grade_passback_setting": null,
+        "end_at": null,
+        "public_syllabus": false,
+        "public_syllabus_to_auth": false,
+        "storage_quota_mb": 500,
+        "is_public_to_auth_users": false,
+        "homeroom_course": false,
+        "course_color": null,
+        "friendly_name": null,
+        "apply_assignment_group_weights": false,
+        "calendar": {
+            "ics": "https://canvas.instructure.com/feeds/calendars/course_aP94gB2vYO9wEL1l3J7sU3KseHxef3UUvDa6zfnb.ics"
+        },
+        "time_zone": "America/Denver",
+        "blueprint": false,
+        "template": false,
+        "sis_course_id": null,
+        "integration_id": null,
+        "enrollments": [
+            {
+                "type": "teacher",
+                "role": "TeacherEnrollment",
+                "role_id": 994,
+                "user_id": 118064555,
+                "enrollment_state": "active",
+                "limit_privileges_to_course_section": false
+            }
+        ],
+        "hide_final_grades": false,
+        "workflow_state": "unpublished",
+        "restrict_enrollments_to_course_dates": false
+    },
+    {
+        "id": 12702521,
+        "name": "Updated Course Name 10",
+        "account_id": 81259,
+        "uuid": "hz0PavvRtAwaA3DGNRyQonWQkpr78TJ1S3VdpNwt",
+        "start_at": "2025-09-01T08:00:00Z",
+        "grading_standard_id": null,
+        "is_public": false,
+        "created_at": "2025-08-28T11:56:43Z",
+        "course_code": "UPDATED101",
+        "default_view": "modules",
+        "root_account_id": 10,
+        "enrollment_term_id": 1,
+        "license": "cc_by",
+        "grade_passback_setting": "nightly_sync",
+        "end_at": "2026-05-30T23:59:59Z",
+        "public_syllabus": true,
+        "public_syllabus_to_auth": true,
+        "storage_quota_mb": 500,
+        "is_public_to_auth_users": true,
+        "homeroom_course": false,
+        "course_color": "#337ab7",
+        "friendly_name": null,
+        "apply_assignment_group_weights": true,
+        "calendar": {
+            "ics": "https://canvas.instructure.com/feeds/calendars/course_hz0PavvRtAwaA3DGNRyQonWQkpr78TJ1S3VdpNwt.ics"
+        },
+        "time_zone": "America/New_York",
+        "blueprint": false,
+        "template": false,
+        "sis_course_id": null,
+        "integration_id": "INTEGRATION123",
+        "enrollments": [
+            {
+                "type": "teacher",
+                "role": "TeacherEnrollment",
+                "role_id": 994,
+                "user_id": 118064555,
+                "enrollment_state": "active",
+                "limit_privileges_to_course_section": false
+            }
+        ],
+        "hide_final_grades": false,
+        "workflow_state": "available",
+        "course_format": "online",
+        "restrict_enrollments_to_course_dates": true
+    }
+]

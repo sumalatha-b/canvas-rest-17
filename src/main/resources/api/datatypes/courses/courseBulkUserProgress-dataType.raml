@@ -1,0 +1,17 @@
+#%RAML 1.0 DataType
+type: array
+items:
+  type: object
+  properties:
+    id: integer
+    display_name?: string
+    avatar_image_url?: string
+    html_url?: string
+    pronouns?: string | nil
+    progress:
+      type: object
+      properties:
+        requirement_count?: integer
+        requirement_completed_count?: integer
+        next_requirement_url?: string | nil
+        completed_at?: datetime | nil

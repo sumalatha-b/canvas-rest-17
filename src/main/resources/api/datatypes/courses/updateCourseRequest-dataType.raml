@@ -1,0 +1,41 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  course:
+    type: object
+    properties:
+      account_id?: integer
+      name?: string
+      course_code?: string
+      start_at?: datetime
+      end_at?: datetime
+      license?: string
+      is_public?: boolean
+      is_public_to_auth_users?: boolean
+      public_syllabus?: boolean
+      public_syllabus_to_auth?: boolean
+      public_description?: string
+      allow_student_wiki_edits?: boolean
+      allow_wiki_comments?: boolean
+      allow_student_forum_attachments?: boolean
+      open_enrollment?: boolean
+      self_enrollment?: boolean
+      restrict_enrollments_to_course_dates?: boolean
+      term_id?: integer
+      sis_course_id?: string
+      integration_id?: string
+      hide_final_grades?: boolean
+      time_zone?: string
+      apply_assignment_group_weights?: boolean
+      default_view?: string
+      syllabus_body?: string
+      grading_standard_id?: integer
+      grade_passback_setting?: string
+      course_format?: string
+      post_manually?: boolean
+      blueprint?: boolean
+      template?: boolean
+      course_color?: string
+      friendly_name?: string
+      conditional_release?: boolean
+  offer?: boolean

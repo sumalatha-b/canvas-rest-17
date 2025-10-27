@@ -1,0 +1,28 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  user:
+    type: object
+    properties:
+      name?: string
+      short_name?: string
+      sortable_name?: string
+      time_zone?: string
+      email?: string
+      locale?: string
+      avatar?:
+        type: object
+        properties:
+          token?: string
+          url?: string
+          state?:
+            type: string
+            enum: [ none, submitted, approved, locked, reported, re_reported ]
+      title?: string
+      bio?: string
+      pronunciation?: string
+      pronouns?: string
+      event?:
+        type: string
+        enum: [ suspend, unsuspend ]
+  override_sis_stickiness?: boolean

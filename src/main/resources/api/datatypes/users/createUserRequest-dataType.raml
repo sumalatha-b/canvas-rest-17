@@ -1,0 +1,39 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  user:
+    type: object
+    properties:
+      name: string
+      short_name?: string
+      sortable_name?: string
+      time_zone?: string
+      locale?: string
+      terms_of_use?: boolean
+      skip_registration?: boolean
+  pseudonym:
+    type: object
+    properties:
+      unique_id: string
+      password?: string
+      sis_user_id?: string
+      integration_id?: string
+      send_confirmation?: boolean
+      force_self_registration?: boolean
+      authentication_provider_id?: string
+  communication_channel?:
+    type: object
+    properties:
+      type?: string
+      address?: string
+      confirmation_url?: boolean
+      skip_confirmation?: boolean
+  force_validations?: boolean
+  enable_sis_reactivation?: boolean
+  destination?: string
+  initial_enrollment_type?: string
+  pairing_code?:
+    type: object
+    properties:
+      code?: string
+

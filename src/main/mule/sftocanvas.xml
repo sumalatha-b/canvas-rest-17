@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:canvas="http://www.mulesoft.org/schema/mule/canvas" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:canvas-rest-lms="http://www.mulesoft.org/schema/mule/canvas-rest-lms"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/canvas-rest-lms http://www.mulesoft.org/schema/mule/canvas-rest-lms/current/mule-canvas-rest-lms.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
+	<flow name="sftocanvasCreateFlow" doc:id="e9fa4f4a-dd3c-4cde-a92f-449b28bb3a64" >
+		
+		<salesforce:new-object-listener objectType="Course__c" doc:name="On New Object" doc:id="4d202573-189d-4bd5-ad8c-22cc1e76cd4e" config-ref="Salesforce_Config">
+			<scheduling-strategy >
+				<fixed-frequency frequency="1" timeUnit="MINUTES" />
+			</scheduling-strategy>
+		</salesforce:new-object-listener>
+		<logger level="INFO" doc:name="Logger" doc:id="5df0bd46-06b2-4a04-a1e7-718c7e9b2e42" message="Salesforce to Canvas Create Flow Started"/>
+		<logger level="INFO" doc:name="Logger" doc:id="05360f27-d2ac-400f-88f1-a5c5f57cae42" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]"/>
+		<ee:transform doc:name="canvasRequest" doc:id="19dd3cf2-741b-4670-a55b-cc19b366d844" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"course": {
+		"name": payload.Name default "",
+		"course_code": payload.Course_Code__c default "",
+		"start_at": payload.Start_At__c as String default "",
+		"end_at": payload.End_At__c as String default "",
+		"license": payload.License__c default "",
+		"is_public": payload.Is_Public__c as Boolean,
+		"is_public_to_auth_users": payload.Is_Public_to_Auth_Users__c as Boolean,
+		"public_syllabus": payload.Public_Syllabus__c as Boolean,
+		"public_syllabus_to_auth": payload.Public_Syllabus_to_Auth__c as Boolean,
+		"public_description": payload.Public_Description__c default "",
+		"allow_student_wiki_edits": payload.Allow_Student_Wiki_Edits__c as Boolean,
+		"allow_wiki_comments": payload.Allow_Wiki_Comments__c as Boolean,
+		"allow_student_forum_attachments": payload.Allow_Student_Forum_Attachments__c as Boolean,
+		"open_enrollment": payload.Open_Enrollment__c as Boolean,
+		"self_enrollment": payload.Self_Enrollment__c as Boolean,
+		"restrict_enrollments_to_course_dates": payload.Restrict_Enrollments_to_Course_Dates__c as Boolean,
+		"term_id": payload.Term_Id__c as Number default 1,
+		"sis_course_id": payload.SIS_Course_ID__c default "",
+		"hide_final_grades": payload.Hide_Final_Grades__c as Boolean,
+		"apply_assignment_group_weights": payload.Apply_Assignment_Group_Weights__c as Boolean,
+		"time_zone": payload.Time_Zone__c default "",
+		"default_view": payload.Default_View__c default "",
+		"syllabus_body": payload.Syllabus_Body__c default "",
+		"grade_passback_setting": payload.Grade_Passback_Setting__c default "",
+		"course_format": payload.Course_Format__c default "",
+		"post_manually": payload.Post_Manually__c as Boolean
+	},
+	"offer": payload.Offer__c default true,
+	"enroll_me": payload.Enroll_Me__c as Boolean,
+	"skip_course_template": payload.Skip_Course_Template__c as Boolean,
+	"enable_sis_reactivation": payload.Enable_SIS_Reactivation__c as Boolean
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="accountId" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.Canvas_Account_ID__c as Number]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d98f3f0e-3cd1-4fa2-94a7-99049403bd64" message="#[payload]"/>
+		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="708f04e6-24de-445f-8177-fde37cd038b7" config-ref="Canvas_Config" accountIdUriParam="#[vars.accountId]"/>
+		<ee:transform doc:name="canvasResponse" doc:id="00aabb97-8dbc-42df-8569-656bf6424933" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="44e6764c-77d4-4be4-8c48-5fb7ecef22f0" message="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="91c938d3-940e-4621-9b90-d37cbfdd2dd8" message="Salesforce to Canvas Create Flow Ended"/>
+	</flow>
+</mule>
