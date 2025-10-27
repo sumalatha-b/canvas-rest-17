@@ -27,7 +27,12 @@
         <error-handler ref="Global-Error-Handler" />
     </flow>
     <flow name="put:\courses\(id):application\json:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="9949cd55-f6b6-4c96-b99f-35c2b64c0dac" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}" />
+        <http:listener doc:name="Listener" doc:id="9949cd55-f6b6-4c96-b99f-35c2b64c0dac" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
@@ -57,7 +62,7 @@
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="2e185e35-bffa-4ad6-972d-f986ee55fe8e" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam="conclude" />
+        <canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="2e185e35-bffa-4ad6-972d-f986ee55fe8e" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam='#[attributes.queryParams.event default "conclude"]' />
     </flow>
     <flow name="delete:\sections\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -100,7 +105,13 @@
         <canvas:get-courses-course-id-search-users doc:name="Course - List users in course" doc:id="37c463b1-d290-4535-873d-c9ce2b4efed2" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" />
     </flow>
     <flow name="get:\courses\(course_id)\sections:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="e1674a6d-0e2f-4b2e-8199-f706f1b5bd68" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/sections" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
@@ -154,7 +165,13 @@
         <canvas:get-users-id doc:name="User - Show user details" doc:id="a8f9d602-8dc1-4cb0-8844-e98f017e0270" config-ref="Canvas_Config" idUriParam="#[vars.id]" />
     </flow>
     <flow name="get:\users\(user_id)\courses:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="142aadf9-9ddb-4289-b95e-fe75b7831559" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/courses">
+			<http:error-response statusCode="#[vars.httpStatus default 500]">
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
