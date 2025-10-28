@@ -64,7 +64,7 @@ payload.Canvas_Account_ID__c as Number]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="d98f3f0e-3cd1-4fa2-94a7-99049403bd64" message="#[payload]"/>
-		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="708f04e6-24de-445f-8177-fde37cd038b7" config-ref="Canvas_Config" accountIdUriParam="#[vars.accountId]"/>
+		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="708f04e6-24de-445f-8177-fde37cd038b7" config-ref="Canvas_Config" accountIdUriParam="#[vars.accountId]" correlationIdHeader="#[correlationId]"/>
 		<ee:transform doc:name="canvasResponse" doc:id="00aabb97-8dbc-42df-8569-656bf6424933" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
