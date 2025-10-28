@@ -24,6 +24,7 @@ securedBy:
   - Authorization
 traits:
   errorResponse: !include /traits/errorResponse-trait.raml
+  commonHeaders: !include /traits/commonHeaders-trait.raml
 types:
   User: !include /datatypes/users/users-dataType.raml
   Courses: !include /datatypes/courses/courses-dataType.raml
@@ -39,11 +40,8 @@ types:
   courseByUserId: !include /datatypes/courses/courseByUserId-dataType.raml
   courseProgress: !include /datatypes/courses/courseProgress-dataType.raml
   coursebulkuserprogress: !include /datatypes/courses/courseBulkUserProgress-dataType.raml
-  
-  section: !include /datatypes/sections/sections-dataType.raml
-  
-  deleteSections: !include /datatypes/sections/deleteSections-dataType.raml
-  
+  section: !include /datatypes/sections/sections-dataType.raml 
+  deleteSections: !include /datatypes/sections/deleteSections-dataType.raml 
   createUserReq: !include /datatypes/users/createUserRequest-dataType.raml
   createUserRes: !include /datatypes/users/createUserResponse-dataType.raml
   SectionReq: !include /datatypes/sections/sectionRequest-dataType.raml
@@ -53,8 +51,6 @@ types:
   updateSectionReq: !include /datatypes/sections/updateSectionRequest-dataType.raml
   updateSectionRes: !include /datatypes/sections/updateSectionResponse-dataType.raml
   
-  
-
 /users/{id}:
   uriParameters:
     id:
@@ -62,7 +58,7 @@ types:
       required: true
       example: "118064555"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: User - Show user details
     description: Get user details by ID
     responses:
@@ -72,7 +68,7 @@ types:
             type: User
             example: !include /examples/users/users-example.json
   put:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: User - Edit a user
     description: Modify an existing user.
     body:
@@ -92,7 +88,7 @@ types:
       required: true
       example: "12635863"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - Get a single course
     description: Get courses by ID
     responses:
@@ -102,7 +98,7 @@ types:
             type: Courses
             example: !include /examples/courses/courses-example.json
   delete:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - Delete/Conclude a course
     description: Delete course
     queryParameters:
@@ -116,7 +112,7 @@ types:
           application/json:
             example: !include /examples/courses/deleteCourse-example.json
   put:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - Update a course
     description: Update course
     body:
@@ -137,7 +133,7 @@ types:
       required: true
       example: "81259"
   post:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - Create a new course
     description: Create course
     body:
@@ -158,7 +154,7 @@ types:
       required: true
       example: "81259"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: User - List users in account
     description: List users in account
     responses:
@@ -168,7 +164,7 @@ types:
             type: accountUser 
             example: !include /examples/accountUsers/accountUser-example.json
   post:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: User - Create a user
     description: Create and return a new user and pseudonym for an account.
     body:
@@ -184,7 +180,7 @@ types:
             example: !include /examples/users/createUserResponse-example.json
 /users/self/upcoming_events:
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: User - List upcoming assignments, calendar events
     description: upcoming Events
     responses:
@@ -200,7 +196,7 @@ types:
       required: true
       example: "81259"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: User - List Missing Submissions
     description: list Missing Submission
     queryParameters:
@@ -226,7 +222,7 @@ types:
       required: true
       example: "12635863"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - List users in course
     description: list Users in Course
     queryParameters:
@@ -264,7 +260,7 @@ types:
       required: true
       example: "12635863"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - Get single user
     description: get single user
     responses:
@@ -280,7 +276,7 @@ types:
       required: true
       example: "12635863"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - List courses for a user
     description: List courses for a user
     responses:
@@ -301,7 +297,7 @@ types:
       required: true
       example: "12635863"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - Get user progress
     description: Get user progress
     responses:
@@ -317,7 +313,7 @@ types:
       required: true
       example: "12635863"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Course - Get bulk user progress
     description: Get bulk user progress
     responses:
@@ -334,7 +330,7 @@ types:
       required: true
       example: "12635863"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Section - List course sections
     description: Returns a paginated list of sections for a course
     queryParameters:
@@ -353,7 +349,7 @@ types:
             type: section
             example: !include /examples/sections/sections-example.json
   post:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Section - Create course section
     description: Creates a new section for this course.
     body:
@@ -378,7 +374,7 @@ types:
       required: true
       example: "11949585"
   get:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Section - Get section information
     description: Get details about a specific section by course and section ID
     queryParameters:
@@ -400,7 +396,7 @@ types:
       required: true
       example: "81259"
   delete:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Section - De-cross-list a section
     description: De-cross-list a section
     queryParameters:
@@ -418,7 +414,7 @@ types:
       required: true
       example: "81259"
   delete:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Section - Delete a section
     description: Delete a section
     responses:
@@ -428,7 +424,7 @@ types:
             type: deleteSections
             example: !include /examples/sections/deleteSections-example.json
   put:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Section - Edit a section
     description: Modify an existing section.
     body:
@@ -454,7 +450,7 @@ types:
       required: true
       example: "12635863"
   post:
-    is: [errorResponse]
+    is: [commonHeaders,errorResponse]
     displayName: Section - Cross-list a section
     description: Move the section to another course. The new course must belong to the same root account.
     body:
