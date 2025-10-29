@@ -1,0 +1,16 @@
+#%RAML 1.0 DataType
+type: array
+items:
+  type: object
+  properties:
+    id: integer
+    name: string
+    uuid: string
+    parent_account_id: integer
+    root_account_id: integer
+    default_storage_quota_mb: integer
+    default_user_storage_quota_mb: integer
+    default_group_storage_quota_mb: integer
+    workflow_state: string
+    sub_account_count: integer
+    course_count: integer

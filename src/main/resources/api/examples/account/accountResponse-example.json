@@ -1,0 +1,54 @@
+[
+    {
+      "id": 81259,
+      "name": "Main University Account",
+      "uuid": "a1b2c3d4e5f6",
+      "parent_account_id": null,
+      "root_account_id": 81259,
+      "default_storage_quota_mb": 500,
+      "default_user_storage_quota_mb": 50,
+      "default_group_storage_quota_mb": 50,
+      "workflow_state": "active",
+      "lti_guid": "abc123-lti-guid",
+      "sub_account_count": 3,
+      "course_count": 150,
+      "registration_settings": {
+        "terms_of_use": "https://university.edu/terms",
+        "privacy_policy": "https://university.edu/privacy"
+      },
+      "services": [
+        {
+          "name": "GoogleDriveIntegration",
+          "enabled": true
+        },
+        {
+          "name": "Office365Integration",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "id": 90001,
+      "name": "Science Department",
+      "uuid": "z9y8x7w6v5u4",
+      "parent_account_id": 81259,
+      "root_account_id": 81259,
+      "default_storage_quota_mb": 300,
+      "default_user_storage_quota_mb": 30,
+      "default_group_storage_quota_mb": 30,
+      "workflow_state": "active",
+      "lti_guid": null,
+      "sub_account_count": 5,
+      "course_count": 45,
+      "registration_settings": {
+        "terms_of_use": "https://university.edu/terms",
+        "privacy_policy": "https://university.edu/privacy"
+      },
+      "services": [
+        {
+          "name": "GoogleDriveIntegration",
+          "enabled": true
+        }
+      ]
+    }
+  ]

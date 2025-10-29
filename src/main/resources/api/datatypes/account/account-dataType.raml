@@ -1,0 +1,29 @@
+#%RAML 1.0 DataType
+type: array
+items:
+  type: object
+  properties:
+    id: integer
+    name: string
+    uuid: string
+    parent_account_id?: integer | nil
+    root_account_id: integer
+    default_storage_quota_mb: integer
+    default_user_storage_quota_mb: integer
+    default_group_storage_quota_mb: integer
+    workflow_state: string
+    lti_guid?: string | nil
+    sub_account_count: integer
+    course_count: integer
+    registration_settings?:
+      type: object
+      properties:
+        terms_of_use: string
+        privacy_policy: string
+    services?:
+      type: array
+      items:
+        type: object
+        properties:
+          name: string
+          enabled: boolean

@@ -1,0 +1,28 @@
+[
+  {
+    "id": 90001,
+    "name": "Science Department",
+    "uuid": "z9y8x7w6v5u4",
+    "parent_account_id": 81259,
+    "root_account_id": 81259,
+    "default_storage_quota_mb": 300,
+    "default_user_storage_quota_mb": 30,
+    "default_group_storage_quota_mb": 30,
+    "workflow_state": "active",
+    "sub_account_count": 5,
+    "course_count": 45
+  },
+  {
+    "id": 90002,
+    "name": "Arts Department",
+    "uuid": "y8x7w6v5u4z9",
+    "parent_account_id": 81259,
+    "root_account_id": 81259,
+    "default_storage_quota_mb": 250,
+    "default_user_storage_quota_mb": 25,
+    "default_group_storage_quota_mb": 25,
+    "workflow_state": "active",
+    "sub_account_count": 2,
+    "course_count": 30
+  }
+]

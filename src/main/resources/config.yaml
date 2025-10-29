@@ -1,3 +1,6 @@
 https:
   host: "localhost"
   port: "8081"
+  
+canvas:
+  token: "Bearer 7~TP4z7mkKvmWAtWWQTCA6eMGCtTGJEy9ZcAv8UGJBNvTCc4yQGr6MD8H4arERB8HQ"

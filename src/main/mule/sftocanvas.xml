@@ -11,7 +11,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
 		
 		<salesforce:new-object-listener objectType="Course__c" doc:name="On New Object" doc:id="4d202573-189d-4bd5-ad8c-22cc1e76cd4e" config-ref="Salesforce_Config">
 			<scheduling-strategy >
-				<fixed-frequency frequency="1" timeUnit="MINUTES" />
+				<fixed-frequency frequency="10000"/>
 			</scheduling-strategy>
 		</salesforce:new-object-listener>
 		<logger level="INFO" doc:name="Logger" doc:id="5df0bd46-06b2-4a04-a1e7-718c7e9b2e42" message="Salesforce to Canvas Create Flow Started"/>
