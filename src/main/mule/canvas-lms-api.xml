@@ -220,25 +220,25 @@ output application/json --- payload default error.description]]]></http:body>
         <canvas:post-sections-id-crosslist-new-course-id doc:name="Section - Cross-list a section" doc:id="0930fa2a-c9e4-4e4a-8353-719b06c2ef5c" config-ref="Canvas_Config" idUriParam="#[vars.id]" newCourseIdUriParam="#[vars.new_course_id]" correlationIdHeader="#[correlationId]" />
     </flow>
     <flow name="get:\accounts:canvas-lms-api-config">
-		<canvas:get-accounts doc:name="Account - List accounts" doc:id="5d038685-2f5f-40c2-acd6-36bc5835fd47" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]"/>
+        <canvas:get-accounts doc:name="Account - List accounts" doc:id="5d038685-2f5f-40c2-acd6-36bc5835fd47" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" />
     </flow>
-	<flow name="get:\accounts\(account_id)\sub_accounts:canvas-lms-api-config">
+    <flow name="get:\accounts\(account_id)\sub_accounts:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-accounts-account-id-sub-accounts doc:name="Account - Get the sub-accounts of an account" doc:id="b3ab7ef9-6190-45f8-bd78-ecb16dde00a5" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]"/>
+        <canvas:get-accounts-account-id-sub-accounts doc:name="Account - Get the sub-accounts of an account" doc:id="b3ab7ef9-6190-45f8-bd78-ecb16dde00a5" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
     </flow>
-	<flow name="get:\accounts\(id):canvas-lms-api-config">
+    <flow name="get:\accounts\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-id doc:name="Account - Get a single account" doc:id="db0c48a7-8c13-49f7-a72a-cfcac34a9d93" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]"/>
+        <canvas:get-accounts-id doc:name="Account - Get a single account" doc:id="db0c48a7-8c13-49f7-a72a-cfcac34a9d93" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
     </flow>
-	<flow name="useflow" doc:id="808178ef-bcc9-4816-b734-b649724f78a9">
+    <flow name="useflow" doc:id="808178ef-bcc9-4816-b734-b649724f78a9">
         <http:listener doc:name="Listener" doc:id="ba0a5746-0cda-42e4-8d0f-f4e336ef1c9b" config-ref="canvas-lms-api-httpListenerConfig" path="/v1/users/{user_id}/courses">
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[%dw 2.0
