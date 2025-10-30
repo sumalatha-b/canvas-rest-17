@@ -14,8 +14,8 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
 				<fixed-frequency frequency="10000"/>
 			</scheduling-strategy>
 		</salesforce:new-object-listener>
-		<logger level="INFO" doc:name="Logger" doc:id="5df0bd46-06b2-4a04-a1e7-718c7e9b2e42" message="Salesforce to Canvas Create Flow Started"/>
-		<logger level="INFO" doc:name="Logger" doc:id="05360f27-d2ac-400f-88f1-a5c5f57cae42" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]"/>
+		<logger level="INFO" doc:name="Salesforce to Canvas Create Flow Started Logger" doc:id="5df0bd46-06b2-4a04-a1e7-718c7e9b2e42" message="Salesforce to Canvas Create Flow Started"/>
+		<logger level="INFO" doc:name="SF Payload Logger" doc:id="05360f27-d2ac-400f-88f1-a5c5f57cae42" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]"/>
 		<ee:transform doc:name="canvasRequest" doc:id="19dd3cf2-741b-4670-a55b-cc19b366d844" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -63,7 +63,7 @@ output application/json
 payload.Canvas_Account_ID__c as Number]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="d98f3f0e-3cd1-4fa2-94a7-99049403bd64" message="#[payload]"/>
+		<logger level="INFO" doc:name="Canvas Request Logger" doc:id="d98f3f0e-3cd1-4fa2-94a7-99049403bd64" message="#[payload]"/>
 		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="708f04e6-24de-445f-8177-fde37cd038b7" config-ref="Canvas_Config" accountIdUriParam="#[vars.accountId]" correlationIdHeader="#[correlationId]"/>
 		<ee:transform doc:name="canvasResponse" doc:id="00aabb97-8dbc-42df-8569-656bf6424933" >
 			<ee:message >
@@ -73,7 +73,7 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="44e6764c-77d4-4be4-8c48-5fb7ecef22f0" message="#[payload]"/>
-		<logger level="INFO" doc:name="Logger" doc:id="91c938d3-940e-4621-9b90-d37cbfdd2dd8" message="Salesforce to Canvas Create Flow Ended"/>
+		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="44e6764c-77d4-4be4-8c48-5fb7ecef22f0" message="#[payload]"/>
+		<logger level="INFO" doc:name="Salesforce to Canvas Create Flow Ended Logger" doc:id="91c938d3-940e-4621-9b90-d37cbfdd2dd8" message="Salesforce to Canvas Create Flow Ended"/>
 	</flow>
 </mule>

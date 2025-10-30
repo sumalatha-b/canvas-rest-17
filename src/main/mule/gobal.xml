@@ -29,6 +29,6 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
 	<configuration-properties doc:name="Configuration properties" doc:id="e5dddb1f-64af-4c93-9632-f326a933a339" file="config.yaml" />
 	<configuration doc:name="Configuration" doc:id="e9e914ec-58c4-47a5-80c5-10e21d8d3ebf" defaultErrorHandler-ref="Global-Error-Handler" />
 	<canvas:config name="Canvas_Config" doc:name="Canvas Config" doc:id="69c01e25-1023-4c58-aeb9-265571d5fa40" >
-		<canvas:authorization-connection authorizationHeader="Bearer 7~TP4z7mkKvmWAtWWQTCA6eMGCtTGJEy9ZcAv8UGJBNvTCc4yQGr6MD8H4arERB8HQ" />
+		<canvas:authorization-connection authorizationHeader="${canvas.token}" baseUri="${canvas.baseUri}"/>
 	</canvas:config>
 </mule>

@@ -4,3 +4,4 @@ https:
   
 canvas:
   token: "Bearer 7~TP4z7mkKvmWAtWWQTCA6eMGCtTGJEy9ZcAv8UGJBNvTCc4yQGr6MD8H4arERB8HQ"
+  baseUri: "https://canvas.instructure.com/api/v1"
