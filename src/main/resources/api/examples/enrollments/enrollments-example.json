@@ -1,0 +1,18 @@
+{
+  "id": 120507116,
+  "user_id": 118064555,
+  "course_id": 12635863,
+  "section_id": 11949585,
+  "type": "StudentEnrollment",
+  "role": "student",
+  "enrollment_state": "active",
+  "created_at": "2025-08-30T12:00:00Z",
+  "updated_at": "2025-08-31T14:00:00Z",
+  "last_activity_at": "2025-08-31T15:00:00Z",
+  "limit_privileges_to_course_section": false,
+  "sis_account_id": "abc123",
+  "sis_course_id": "course_sis_789",
+  "sis_section_id": "section_sis_456",
+  "sis_user_id": "user_sis_101"
+}
+

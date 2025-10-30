@@ -1,0 +1,54 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  sis_course_id?: string | nil
+  uuid: string
+  integration_id?: string | nil
+  sis_import_id?: integer | nil
+  name: string
+  course_code: string
+  original_name?: string
+  workflow_state: string
+  account_id: integer
+  root_account_id: integer
+  enrollment_term_id: integer
+  grading_periods?: object | nil
+  grading_standard_id?: integer | nil
+  grade_passback_setting?: string | nil
+  created_at: datetime
+  start_at?: datetime | nil
+  end_at?: datetime | nil
+  locale?: string | nil
+  enrollments?: array | nil
+  total_students?: integer
+  calendar?: object | nil
+  default_view: string
+  syllabus_body?: string
+  needs_grading_count?: integer
+  term?: object | nil
+  course_progress?: object | nil
+  apply_assignment_group_weights: boolean
+  permissions?: object
+  is_public: boolean
+  is_public_to_auth_users: boolean
+  public_syllabus: boolean
+  public_syllabus_to_auth: boolean
+  public_description?: string
+  storage_quota_mb: integer
+  storage_quota_used_mb: integer
+  hide_final_grades: boolean
+  license?: string | nil
+  allow_student_assignment_edits: boolean
+  allow_wiki_comments: boolean
+  allow_student_forum_attachments: boolean
+  open_enrollment: boolean
+  self_enrollment: boolean
+  restrict_enrollments_to_course_dates: boolean
+  course_format?: string
+  access_restricted_by_date?: boolean
+  time_zone: string
+  blueprint?: boolean
+  blueprint_restrictions?: object
+  blueprint_restrictions_by_object_type?: object
+  template?: boolean

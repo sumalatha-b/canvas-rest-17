@@ -1,0 +1,33 @@
+#%RAML 1.0 DataType
+type: object
+displayName: EnrollmentTerm
+properties:
+  id: integer
+  name: string
+  start_at?: datetime
+  end_at?: datetime
+  created_at?: datetime
+  sis_term_id?: string
+  overrides?:
+    type: object
+    properties:
+      StudentEnrollment?:
+        type: object
+        properties:
+          start_at?: datetime
+          end_at?: datetime
+      TeacherEnrollment?:
+        type: object
+        properties:
+          start_at?: datetime
+          end_at?: datetime
+      TaEnrollment?:
+        type: object
+        properties:
+          start_at?: datetime
+          end_at?: datetime
+      DesignerEnrollment?:
+        type: object
+        properties:
+          start_at?: datetime
+          end_at?: datetime

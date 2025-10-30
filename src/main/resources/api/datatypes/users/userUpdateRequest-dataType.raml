@@ -4,25 +4,25 @@ properties:
   user:
     type: object
     properties:
-      name?: string
-      short_name?: string
-      sortable_name?: string
-      time_zone?: string
-      email?: string
-      locale?: string
+      name?: any
+      short_name?: any
+      sortable_name?: any
+      time_zone?: any
+      email?: any
+      locale?: any
       avatar?:
         type: object
         properties:
-          token?: string
-          url?: string
+          token?: any
+          url?: any
           state?:
             type: string
             enum: [ none, submitted, approved, locked, reported, re_reported ]
-      title?: string
-      bio?: string
-      pronunciation?: string
-      pronouns?: string
+      title?: any
+      bio?: any
+      pronunciation?: any
+      pronouns?: any
       event?:
         type: string
         enum: [ suspend, unsuspend ]
-  override_sis_stickiness?: boolean
+  override_sis_stickiness?: any

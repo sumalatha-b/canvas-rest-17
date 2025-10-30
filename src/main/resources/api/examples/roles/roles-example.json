@@ -1,0 +1,25 @@
+{
+  "id": 1,
+  "label": "New Role",
+  "role": "New Role",
+  "base_role_type": "AccountMembership",
+  "is_account_role": true,
+  "account": {
+    "id": 1019,
+    "name": "CGNU",
+    "parent_account_id": 73,
+    "root_account_id": 1,
+    "sis_account_id": "cgnu"
+  },
+  "workflow_state": "active",
+  "created_at": "2020-12-01T16:20:00-06:00",
+  "last_updated_at": "2023-10-31T23:59:00-06:00",
+  "permissions": {
+    "read_reports": {
+      "enabled": true,
+      "locked": false,
+      "readonly": false,
+      "explicit": false
+    }
+  }
+}

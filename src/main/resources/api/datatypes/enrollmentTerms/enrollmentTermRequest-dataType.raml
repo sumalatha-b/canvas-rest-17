@@ -1,0 +1,36 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  enrollment_term:
+    type: object
+    required: true
+    properties:
+      name:
+        type: any
+        required: false
+      start_at?: any
+      end_at?: any
+      sis_term_id?: any
+      overrides?:
+        type: object
+        properties:
+          StudentEnrollment?:
+            type: object
+            properties:
+              start_at?: any
+              end_at?: any
+          TeacherEnrollment?:
+            type: object
+            properties:
+              start_at?: any
+              end_at?: any
+          TaEnrollment?:
+            type: object
+            properties:
+              start_at?: any
+              end_at?: any
+          DesignerEnrollment?:
+            type: object
+            properties:
+              start_at?: any
+              end_at?: any

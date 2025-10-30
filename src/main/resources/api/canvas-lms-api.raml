@@ -22,9 +22,13 @@ securitySchemes:
           description: Unauthorized
 securedBy:
   - Authorization
+uses:
+  enrollmentsTraits: /traits/enrollments/enrollements-traits.raml
+  submissionsTraits: /traits/submissions/submissions-traits.raml
 traits:
   errorResponse: !include /traits/errorResponse-trait.raml
   commonHeaders: !include /traits/commonHeaders-trait.raml
+
 types:
   User: !include /datatypes/users/users-dataType.raml
   Courses: !include /datatypes/courses/courses-dataType.raml
@@ -40,20 +44,43 @@ types:
   courseByUserId: !include /datatypes/courses/courseByUserId-dataType.raml
   courseProgress: !include /datatypes/courses/courseProgress-dataType.raml
   coursebulkuserprogress: !include /datatypes/courses/courseBulkUserProgress-dataType.raml
-  section: !include /datatypes/sections/sections-dataType.raml 
-  deleteSections: !include /datatypes/sections/deleteSections-dataType.raml 
-  createUserReq: !include /datatypes/users/createUserRequest-dataType.raml
-  createUserRes: !include /datatypes/users/createUserResponse-dataType.raml
-  SectionReq: !include /datatypes/sections/sectionRequest-dataType.raml
-  SectionRes: !include /datatypes/sections/sectionResponse-dataType.raml
-  sectionCrosslistReq: !include /datatypes/sections/sectionCrosslistReq-dataType.raml
-  updateUser: !include /datatypes/users/userUpdateRequest-dataType.raml
-  updateSectionReq: !include /datatypes/sections/updateSectionRequest-dataType.raml
-  updateSectionRes: !include /datatypes/sections/updateSectionResponse-dataType.raml
+  courseAssignmentGroups: !include /datatypes/assignmentGroups/courseAssignmentGroups-dataType.raml
+  activeAccounts: !include /datatypes/account/activeAccounts-dataType.raml
+  roles: !include /datatypes/roles/roles-dataType.raml
+  enrollmentTerms: !include /datatypes/enrollmentTerms/enrollmentTerms-dataType.raml
+  assignment: !include /datatypes/assignment/assignment-dataType.raml
+  section: !include /datatypes/sections/sections-dataType.raml
+  enrollment: !include /datatypes/enrollments/enrollments-dataType.raml
   account: !include /datatypes/account/account-dataType.raml
   subAccounts: !include /datatypes/account/subAccounts-dataType.raml
   accountById: !include /datatypes/account/accuntById-dataType.raml
-  
+  submissions: !include /datatypes/submissions/submissions-dataType.raml
+  deleteSections: !include /datatypes/sections/deleteSections-dataType.raml
+  deleteEnrollments: !include /datatypes/enrollments/deleteEnrollments-dataType.raml
+  login: !include /datatypes/login/login-dataType.raml
+  createUserReq: !include /datatypes/users/createUserRequest-dataType.raml
+  createUserRes: !include /datatypes/users/createUserResponse-dataType.raml
+  createEnrollmentReq: !include /datatypes/enrollments/enrollUserInCourseRequest-dataType.raml
+  createEnrollmentRes: !include /datatypes/enrollments/enrollUserInCourseResponse-dataType.raml
+  bulkEnrollmentReq: !include /datatypes/enrollments/bulkEnrollmentRequest-dataType.raml
+  bulkEnrollmentRes: !include /datatypes/enrollments/bulkEnrollmentResponse-dataType.raml
+  SectionReq: !include /datatypes/sections/sectionRequest-dataType.raml
+  SectionRes: !include /datatypes/sections/sectionResponse-dataType.raml
+  sectionCrosslistReq: !include /datatypes/sections/sectionCrosslistReq-dataType.raml
+  LoginReq: !include /datatypes/login/loginRequest-dataType.raml
+  LoginRes: !include /datatypes/login/loginResponse-dataType.raml
+  EnrollmentTermReq: !include /datatypes/enrollmentTerms/enrollmentTermRequest-dataType.raml
+  EnrollmentTermRes: !include /datatypes/enrollmentTerms/enrollmentTermResponse-dataType.raml
+  updateSectionReq: !include /datatypes/sections/updateSectionRequest-dataType.raml
+  updateSectionRes: !include /datatypes/sections/updateSectionResponse-dataType.raml
+  updateEnrollmentTermReq: !include /datatypes/enrollmentTerms/updateEnrollmentTermRequest-dataType.raml
+  updateEnrollmentTermRes: !include /datatypes/enrollmentTerms/updateEnrollmentTermResponse-dataType.raml
+  updateLoginReq: !include /datatypes/login/updateLoginRequest-dataType.raml
+  updateLoginRes: !include /datatypes/login/updateLoginResponse-dataType.raml
+  updateUser: !include /datatypes/users/userUpdateRequest-dataType.raml
+  updateEnrollment: !include /datatypes/enrollments/updateEnrollmentRequest-dataType.raml
+  getEnrollmentTerms: !include /datatypes/enrollmentTerms/getEnrollmentsTerms-dataType.raml
+
 /users/{id}:
   uriParameters:
     id:
@@ -149,7 +176,16 @@ types:
           application/json:
             type: createCourseRes
             example: !include /examples/courses/createCourseResponse-example.json
-     
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Account - List active courses in an account
+    description: List users in account
+    responses:
+      200:
+        body:
+          application/json:
+            type: activeAccounts
+            example: !include /examples/account/activeAccounts-example.json   
 /accounts/{account_id}/users:
   uriParameters:
     account_id:
@@ -325,7 +361,124 @@ types:
           application/json:
             type: coursebulkuserprogress
             example: !include /examples/courses/courseBulkUserProgress-example.json
- 
+/courses/{course_id}/assignment_groups:
+  uriParameters:
+    course_id:
+      type: string
+      required: true
+      example: "12635863"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Assignment Groups - List assignment groups
+    description: List assignment groups
+    responses:
+      200:
+        body:
+          application/json:
+            type: courseAssignmentGroups
+            example: !include /examples/assignmentGroups/courseAssignmentGroups-example.json
+/accounts/{account_id}/roles:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "81259"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Roles - List roles
+    description: Returns the paginated list of roles in the account.
+    queryParameters:
+      account_id?: string
+      state[]?: string
+      show_inherited?: boolean
+    responses:
+      200:
+        body:
+          application/json:
+            type: roles
+            example: !include /examples/roles/roles-example.json
+/accounts/{account_id}/roles/{id}:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "81259"
+    id:
+      type: string
+      required: true
+      example: "103"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Roles - Get a single role
+    description: Retrieve details for a single role.
+    queryParameters:
+      account_id?: string
+      role_id?: string
+      role?: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: roles
+            example: !include /examples/roles/roles-example.json
+
+/accounts/{accountId}/terms/{termId}:
+  uriParameters:
+    accountId:
+      type: string
+      required: true
+      example: "81259"
+    termId:
+      type: string
+      required: true
+      example: "102"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment Terms - Get enrollment term
+    description: Retrieve details for a single enrollment term.
+    responses:
+      200:
+        body:
+          application/json:
+            type: enrollmentTerms
+            example: !include /examples/enrollmentTerms/enrollmentTerms-example.json
+
+/courses/{course_id}/assignments:
+  uriParameters:
+    course_id:
+      type: string
+      required: true
+      example: "123"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Assignment - List assignments
+    description: Returns the paginated list of assignments for a course.
+    responses:
+      200:
+        body:
+          application/json:
+            type: assignment
+            example: !include /examples/assignment/assignment-example.json
+/courses/{course_id}/assignment_groups/{assignment_group_id}/assignments:
+  uriParameters:
+    course_id:
+      type: string
+      required: true
+      example: "12635863"
+    assignment_group_id:
+      type: string
+      required: true
+      example: "456789"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Assignment - List assignments by assignment groups
+    description: List assignments for a specific assignment group in a course
+    responses:
+      200:
+        body:
+          application/json:
+            type: assignment
+            example: !include /examples/assignment/assignment-example.json
 /courses/{course_id}/sections:
   uriParameters:
     course_id:
@@ -365,7 +518,6 @@ types:
           application/json:
             type: SectionRes
             example: !include /examples/sections/sectionResponse-example.json
-
 /courses/{course_id}/sections/{id}:
   uriParameters:
     course_id:
@@ -391,81 +543,142 @@ types:
           application/json:
             type: section
             example: !include /examples/sections/sections-example.json
-   
-/sections/{id}/crosslist:
+
+
+/courses/{course_id}/enrollments:
   uriParameters:
-    id:
-      type: string
-      required: true
-      example: "81259"
-  delete:
-    is: [commonHeaders,errorResponse]
-    displayName: Section - De-cross-list a section
-    description: De-cross-list a section
-    queryParameters:
-      override_sis_stickiness?: boolean
-    responses:
-      200:
-        body:
-          application/json:
-            type: deleteSections
-            example: !include /examples/sections/deleteSections-example.json
-/sections/{id}:
-  uriParameters:
-    id:
-      type: string
-      required: true
-      example: "81259"
-  delete:
-    is: [commonHeaders,errorResponse]
-    displayName: Section - Delete a section
-    description: Delete a section
-    responses:
-      200:
-        body:
-          application/json:
-            type: deleteSections
-            example: !include /examples/sections/deleteSections-example.json
-  put:
-    is: [commonHeaders,errorResponse]
-    displayName: Section - Edit a section
-    description: Modify an existing section.
-    body:
-      application/json:
-        type: updateSectionReq
-        example: !include /examples/sections/updateSectionRequest-example.json
-    responses:
-      200:
-        description: Section updated successfully
-        body:
-          application/json:
-            type: updateSectionRes
-            example: !include /examples/sections/updateSectionResponse-example.json
-    
-/sections/{id}/crosslist/{new_course_id}:
-  uriParameters:
-    id:
-      type: string
-      required: true
-      example: "11949585"
-    new_course_id:
+    course_id:
       type: string
       required: true
       example: "12635863"
-  post:
-    is: [commonHeaders,errorResponse]
-    displayName: Section - Cross-list a section
-    description: Move the section to another course. The new course must belong to the same root account.
-    body:
-      application/json:
-        type: sectionCrosslistReq
-        example: !include /examples/sections/sectionCrosslistRequest-example.json
+  get:
+    is: [ enrollmentsTraits.enrollmentsQueryParams,commonHeaders,errorResponse ]
+    displayName: Enrollment - List course enrollments
+    description: Returns a paginated list of all enrollments in a course.
     responses:
       200:
         body:
           application/json:
-            type: SectionRes
-            example: !include /examples/sections/sectionResponse-example.json
+            type: enrollment
+            example: !include /examples/enrollments/enrollments-example.json
+  post:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment - Enroll a user in a course
+    description: Create a new user enrollment for a course.
+    body:
+      application/json:
+        type: createEnrollmentReq
+        example: !include /examples/enrollments/enrollUserInCourseRequest-example.json
+    responses:
+      200:
+        description: Enrollment created successfully
+        body:
+          application/json:
+            type: createEnrollmentRes
+            example: !include /examples/enrollments/enrollUserInCourseResponse-example.json
+/sections/{section_id}/enrollments:
+  uriParameters:
+    section_id:
+      type: string
+      required: true
+      example: "987654"
+  get:
+    is: [ enrollmentsTraits.enrollmentsQueryParams,commonHeaders,errorResponse ]
+    displayName: Enrollment - List section enrollments
+    description: Returns a paginated list of all enrollments in a section.
+    responses:
+      200:
+        body:
+          application/json:
+            type: enrollment
+            example: !include /examples/enrollments/enrollments-example.json
+  post:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment - Enroll a user in a section
+    description: Create a new user enrollment for a section.
+    body:
+      application/json:
+        type: createEnrollmentReq
+        example: !include /examples/enrollments/enrollUserInCourseRequest-example.json
+    responses:
+      200:
+        description: Enrollment created successfully
+        body:
+          application/json:
+            type: createEnrollmentRes
+            example: !include /examples/enrollments/enrollUserInCourseResponse-example.json
+            
+/users/{user_id}/enrollments:
+  uriParameters:
+    user_id:
+      type: string
+      required: true
+      example: "555666"
+  get:
+    is: [ enrollmentsTraits.enrollmentsQueryParams,commonHeaders,errorResponse ]
+    displayName: Enrollment - List enrollments of a user
+    description: Returns a paginated list of all enrollments for a user.
+    responses:
+      200:
+        body:
+          application/json:
+            type: enrollment
+            example: !include /examples/enrollments/enrollments-example.json
+/accounts/{account_id}/enrollments/{id}:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "81259"
+    id:
+      type: string
+      required: true
+      example: "120507116"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment - Get enrollment by ID
+    description: Get an Enrollment object by Enrollment ID
+    responses:
+      200:
+        body:
+          application/json:
+            type: enrollment
+            example: !include /examples/enrollments/enrollments-example.json
+
+/courses/{course_id}/students/submissions:
+  uriParameters:
+    course_id:
+      type: string
+      required: true
+      example: "255"
+  get:
+    is: [ submissionsTraits.submissionsForStudentsQuery,commonHeaders,errorResponse ]
+    displayName: Submission - List submissions for multiple assignments
+    description: List submissions for multiple assignments by course
+    responses:
+      200:
+        body:
+          application/json:
+            type: submissions
+            example: !include /examples/submissions/submissions-example.json
+              
+/sections/{section_id}/students/submissions:
+  uriParameters:
+    section_id:
+      type: string
+      required: true
+      example: "17"
+  get:
+    is: [ submissionsTraits.submissionsForStudentsQuery,commonHeaders,errorResponse ]
+    displayName: Submission - List submissions from course section
+    description: List submissions for multiple assignments by section
+    responses:
+      200:
+        body:
+          application/json:
+            type: submissions
+            example: !include /examples/submissions/submissions-example.json
+              
 /accounts:
   get:
     is: [commonHeaders,errorResponse]
@@ -532,9 +745,295 @@ types:
             type: subAccounts
             example: !include /examples/account/subAccountResponse-example.json
 
+      
+
+   
+/sections/{id}/crosslist:
+  uriParameters:
+    id:
+      type: string
+      required: true
+      example: "81259"
+  delete:
+    is: [commonHeaders,errorResponse]
+    displayName: Section - De-cross-list a section
+    description: De-cross-list a section
+    queryParameters:
+      override_sis_stickiness?: boolean
+    responses:
+      200:
+        body:
+          application/json:
+            type: deleteSections
+            example: !include /examples/sections/deleteSections-example.json
+/sections/{id}:
+  uriParameters:
+    id:
+      type: string
+      required: true
+      example: "81259"
+  delete:
+    is: [commonHeaders,errorResponse]
+    displayName: Section - Delete a section
+    description: Delete a section
+    responses:
+      200:
+        body:
+          application/json:
+            type: deleteSections
+            example: !include /examples/sections/deleteSections-example.json
+  put:
+    is: [commonHeaders,errorResponse]
+    displayName: Section - Edit a section
+    description: Modify an existing section.
+    body:
+      application/json:
+        type: updateSectionReq
+        example: !include /examples/sections/updateSectionRequest-example.json
+    responses:
+      200:
+        description: Section updated successfully
+        body:
+          application/json:
+            type: updateSectionRes
+            example: !include /examples/sections/updateSectionResponse-example.json
+
+/courses/{course_id}/enrollments/{id}:
+  uriParameters:
+    course_id:
+      type: string
+      required: true
+      example: "81259"
+    id:
+      type: string
+      required: true
+      example: "81259"
+  delete:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment - Conclude, deactivate, or delete an enrollment
+    description: Conclude, deactivate, or delete an enrollment
+    queryParameters:
+      task?:
+        type: string
+        enum: [conclude, delete, inactivate, deactivate]
+    responses:
+      200:
+        body:
+          application/json:
+            type: deleteEnrollments
+            example: !include /examples/enrollments/deleteEnrollments-example.json
+
+/accounts/{account_id}/terms/{id}:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "81259"
+    id:
+      type: string
+      required: true
+      example: "81259"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment Terms - Retrieve enrollment term
+    description: Retrieve enrollment term
+    responses:
+      200:
+        body:
+          application/json:
+            type: getEnrollmentTerms
+            example: !include /examples/enrollmentTerms/getEnrollmentTrems-example.json
+
+  delete:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment Terms - Delete enrollment term
+    description: Delete enrollment term
+    responses:
+      200:
+        body:
+          application/json:
+            type: enrollmentTerms
+            example: !include /examples/enrollmentTerms/enrollmentTerms-example.json
+  put:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment Terms - Update enrollment term
+    description: Update an existing enrollment term for the specified account.
+    body:
+      application/json:
+        type: updateEnrollmentTermReq
+        example: !include /examples/enrollmentTerms/updateEnrollmentTermRequest-example.json
+    responses:
+      200:
+        description: EnrollmentTerm updated successfully
+        body:
+          application/json:
+            type: updateEnrollmentTermRes
+            example: !include /examples/enrollmentTerms/updateEnrollmentTermResponse-example.json
+/users/{user_id}/logins/{id}:
+  uriParameters:
+    user_id:
+      type: string
+      required: true
+      example: "81259"
+    id:
+      type: string
+      required: true
+      example: "81259"
+  delete:
+    is: [commonHeaders,errorResponse]
+    displayName: Login - Delete a user login
+    description: Delete a user login
+    responses:
+      200:
+        body:
+          application/json:
+            type: login
+            example: !include /examples/login/login-example.json
+/accounts/{account_id}/bulk_enrollment:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "1001"
+  post:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment - Enroll multiple users to one or more courses
+    description: Enrolls multiple users in one or more courses in a single operation.
+    body:
+      application/json:
+        type: bulkEnrollmentReq
+        example: !include /examples/enrollments/bulkEnrollmentRequest-example.json
+    responses:
+      200:
+        description: Progress object describing batch enrollment job status
+        body:
+          application/json:
+            type: bulkEnrollmentRes
+            example: !include /examples/enrollments/bulkEnrollmentResponse-example.json
+/sections/{id}/crosslist/{new_course_id}:
+  uriParameters:
+    id:
+      type: string
+      required: true
+      example: "11949585"
+    new_course_id:
+      type: string
+      required: true
+      example: "12635863"
+  post:
+    is: [commonHeaders,errorResponse]
+    displayName: Section - Cross-list a section
+    description: Move the section to another course. The new course must belong to the same root account.
+    body:
+      application/json:
+        type: sectionCrosslistReq
+        example: !include /examples/sections/sectionCrosslistRequest-example.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: SectionRes
+            example: !include /examples/sections/sectionResponse-example.json
+
+/accounts/{account_id}/logins:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "10"
+  post:
+    is: [commonHeaders,errorResponse]
+    displayName: Login - Create a user login
+    description: Create a new login for an existing user in the given account.
+    body:
+      application/json:
+        type: LoginReq
+        example: !include /examples/login/loginRequest-example.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: LoginRes
+            example: !include /examples/login/loginResponse-example.json
+/accounts/{account_id}/terms:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "81259"
+  get:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment Terms - List enrollment terms
+    description: Returns the list of enrollment terms for the account.
+    responses:
+      200:
+        body:
+          application/json:
+            type: enrollmentTerms
+            example: !include /examples/enrollmentTerms/enrollmentTerms-example.json
+  post:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment Terms - Create enrollment term
+    description: Create a new enrollment term for the specified account.
+    body:
+      application/json:
+        type: EnrollmentTermReq
+        example: !include /examples/enrollmentTerms/enrollmentTermRequest-example.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: EnrollmentTermRes
+            example: !include /examples/enrollmentTerms/enrollmentTermResponse-example.json
+
+/accounts/{account_id}/logins/{id}:
+  uriParameters:
+    account_id:
+      type: string
+      required: true
+      example: "123"
+    id:
+      type: string
+      required: true
+      example: "1"
+  put:
+    is: [commonHeaders,errorResponse]
+    displayName: Login - Edit a user login
+    description: Update an existing login for a user in the given account.
+    body:
+      application/json:
+        type: updateLoginReq
+        example: !include /examples/login/updateLoginRequest-example.json
+    responses:
+      200:
+        description: Login updated successfully
+        body:
+          application/json:
+            type: updateLoginRes
+            example: !include /examples/login/updateLoginResponse-example.json
+/courses/{course_id}/enrollments/{id}/reactivate:
+  uriParameters:
+    course_id:
+      type: string
+      required: true
+      example: "4567"
+    id:
+      type: string
+      required: true
+      example: "98765"
+
+  put:
+    is: [commonHeaders,errorResponse]
+    displayName: Enrollment - Reactivate an enrollment
+    description: Activates an inactive enrollment.
+    responses:
+      200:
+        body:
+          application/json:
+            type: updateEnrollment
+            example: !include /examples/enrollments/updateEnrollmentResponse-example.json
 
   
-
   
     
 

@@ -1,0 +1,20 @@
+{
+  "enrollment": {
+    "user_id": "1",
+    "type": "StudentEnrollment",
+    "enrollment_state": "active",
+    "course_section_id": 1,
+    "limit_privileges_to_course_section": true,
+    "notify": false,
+    "self_enrollment_code": "ABC123",
+    "self_enrolled": true,
+    "associated_user_id": null,
+    "sis_user_id": "SHEL93921",
+    "integration_id": "INTG12345",
+    "root_account": "example.instructure.com",
+    "role": "StudentEnrollment",
+    "role_id": 1,
+    "start_at": "2025-09-01T08:00:00Z",
+    "end_at": "2026-05-15T17:00:00Z"
+  }
+}

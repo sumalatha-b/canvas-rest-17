@@ -1,0 +1,54 @@
+#%RAML 1.0 Library
+traits:
+  submissionsForStudentsQuery:
+    queryParameters:
+      student_ids:
+        type: string
+        required: false
+        description: List of student ids to return submissions for.
+      assignment_ids:
+        type: string
+        required: false
+        description: List of assignment ids to return submissions for.
+      grouped:
+        type: boolean
+        required: false
+        description: If true, response will be grouped by students instead of a flat array.
+      post_to_sis:
+        type: boolean
+        required: false
+        description: Only include submissions for SIS assignments/enrollments.
+      submitted_since:
+        type: datetime
+        required: false
+        description: Only submissions after specified date (ISO8601).
+      graded_since:
+        type: datetime
+        required: false
+        description: Only submissions graded after specified date (ISO8601).
+      grading_period_id:
+        type: integer
+        required: false
+      workflow_state:
+        type: string
+        required: false
+        enum: [submitted, unsubmitted, graded, pending_review]
+      enrollment_state:
+        type: string
+        required: false
+        enum: [active, concluded]
+      state_based_on_date:
+        type: boolean
+        required: false
+      order:
+        type: string
+        required: false
+        enum: [id, graded_at]
+      order_direction:
+        type: string
+        required: false
+        enum: [ascending, descending]
+      include:
+        type: string
+        required: false
+        description: Associations to include (submission_history, submission_comments, etc.)

@@ -1,0 +1,13 @@
+{
+  "login": {
+    "unique_id": "newemail@example.com",
+    "password": "NewPassword123!",
+    "old_password": "OldPassword123!",
+    "sis_user_id": "2",
+    "integration_id": "2",
+    "authentication_provider_id": null,
+    "workflow_state": "active",
+    "declared_user_type": "teacher",
+    "override_sis_stickiness": true
+  }
+}

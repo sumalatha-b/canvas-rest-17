@@ -1,0 +1,60 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  course_id: integer
+  sis_course_id?: string
+  course_integration_id?: string
+  course_section_id: integer
+  section_integration_id?: string
+  sis_account_id?: string
+  sis_section_id?: string
+  sis_user_id?: string
+  enrollment_state?: string
+  limit_privileges_to_course_section?: boolean
+  sis_import_id?: integer
+  root_account_id?: integer
+  type?: string
+  user_id?: integer
+  associated_user_id?: integer | nil
+  role?: string
+  role_id?: integer
+  created_at?: datetime
+  updated_at?: datetime
+  start_at?: datetime
+  end_at?: datetime | nil
+  last_activity_at?: datetime
+  last_attended_at?: datetime | nil
+  total_activity_time?: integer
+  html_url?: string
+  grades?:
+    type: object
+    properties:
+      html_url?: string
+      current_score?: number | nil
+      current_grade?: string | nil
+      final_score?: number | nil
+      final_grade?: string | nil
+  user?:
+    type: object
+    properties:
+      id: integer
+      name?: string
+      sortable_name?: string
+      short_name?: string
+  override_grade?: string
+  override_score?: number
+  unposted_current_grade?: string
+  unposted_final_grade?: string
+  unposted_current_score?: string
+  unposted_final_score?: string
+  has_grading_periods?: boolean
+  totals_for_all_grading_periods_option?: boolean
+  current_grading_period_title?: string | nil
+  current_grading_period_id?: integer | nil
+  current_period_override_grade?: string | nil
+  current_period_override_score?: number | nil
+  current_period_unposted_current_score?: number | nil
+  current_period_unposted_final_score?: number | nil
+  current_period_unposted_current_grade?: string | nil
+  current_period_unposted_final_grade?: string | nil

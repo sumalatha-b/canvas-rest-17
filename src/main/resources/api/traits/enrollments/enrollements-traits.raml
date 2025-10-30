@@ -1,0 +1,53 @@
+#%RAML 1.0 Library
+traits:
+  enrollmentsQueryParams:
+    queryParameters:
+      type:
+        type: string
+        required: false
+        description: Enrollment types to return (StudentEnrollment, TeacherEnrollment, TaEnrollment, DesignerEnrollment, ObserverEnrollment).
+      role:
+        type: string
+        required: false
+        description: Enrollment roles to return.
+      state:
+        type: string
+        required: false
+        description: Filter by enrollment state.
+        enum: [active, invited, creation_pending, deleted, rejected, completed, inactive, current_and_invited, current_and_future, current_future_and_restricted, current_and_concluded]
+      include:
+        type: string
+        required: false
+        description: Additional information to include (avatar_url, group_ids, locked, observed_users, can_be_removed, uuid, current_points).
+      user_id:
+        type: string
+        required: false
+        description: Filter by user_id.
+      grading_period_id:
+        type: integer
+        required: false
+        description: Grading period for grades.
+      enrollment_term_id:
+        type: integer
+        required: false
+        description: Enrollment term filter (only user enrollments).
+      sis_account_id:
+        type: string
+        required: false
+        description: SIS account ID filter.
+      sis_course_id:
+        type: string
+        required: false
+        description: SIS course ID filter.
+      sis_section_id:
+        type: string
+        required: false
+        description: SIS section ID filter.
+      sis_user_id:
+        type: string
+        required: false
+        description: SIS user ID filter.
+      created_for_sis_id:
+        type: boolean
+        required: false
+        description: Filter enrollments created for SIS ID.

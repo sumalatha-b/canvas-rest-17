@@ -1,0 +1,15 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  context_id: integer
+  context_type?: string
+  user_id?: integer
+  tag?: string
+  completion: integer
+  workflow_state: string
+  created_at: datetime
+  updated_at: datetime
+  message?: string
+  results?: object
+  url: string

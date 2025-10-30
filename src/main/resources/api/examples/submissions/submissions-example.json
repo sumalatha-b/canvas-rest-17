@@ -1,0 +1,18 @@
+[
+  {
+    "assignment_id": 100,
+    "user_id": 1,
+    "grade": "A",
+    "score": 95,
+    "attempt": 1,
+    "submitted_at": "2025-09-01T10:10:00Z"
+  },
+  {
+    "assignment_id": 101,
+    "user_id": 2,
+    "grade": "B+",
+    "score": 88,
+    "attempt": 2,
+    "submitted_at": "2025-09-02T11:00:00Z"
+  }
+]

@@ -1,0 +1,9 @@
+  {
+    "id": 98765,
+    "user_id": 123,
+    "unique_id": "112233445566",
+    "sis_user_id": null,
+    "integration_id": null,
+    "authentication_provider_id": "facebook",
+    "created_at": "2025-09-03T10:00:00Z"
+  }

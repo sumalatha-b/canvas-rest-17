@@ -1,0 +1,29 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  label: string
+  role: string
+  base_role_type: string
+  is_account_role: boolean
+  account:
+    type: object
+    properties:
+      id: integer
+      name: string
+      parent_account_id: integer
+      root_account_id: integer
+      sis_account_id?: string
+  workflow_state: string
+  created_at: datetime
+  last_updated_at: datetime
+  permissions:
+    type: object
+    properties:
+      read_reports:
+        type: object
+        properties:
+          enabled: boolean
+          locked: boolean
+          readonly: boolean
+          explicit: boolean

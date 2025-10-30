@@ -1,0 +1,24 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: integer
+  sis_term_id?: string
+  sis_import_id?: integer
+  name: string
+  start_at?: datetime
+  end_at?: datetime
+  workflow_state?: string
+  overrides?:
+    type: object
+    properties:
+      StudentEnrollment?:
+        type: object
+        properties:
+          start_at?: datetime | nil
+          end_at?: datetime | nil
+      TeacherEnrollment?:
+        type: object
+        properties:
+          start_at?: datetime | nil
+          end_at?: datetime | nil
+  course_count?: integer

@@ -1,0 +1,50 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id:
+    type: integer
+    description: Unique identifier of the enrollment
+    example: 123456
+  user_id:
+    type: integer
+    description: The ID of the user enrolled
+    example: 76543
+  course_id?:
+    type: integer
+    description: The ID of the course (if applicable)
+  section_id?:
+    type: integer
+    description: The ID of the section (if applicable)
+  type:
+    type: string
+    description: Enrollment type (StudentEnrollment, TeacherEnrollment, etc.)
+    example: StudentEnrollment
+  role:
+    type: string
+    description: The role associated with the enrollment
+    example: student
+  enrollment_state:
+    type: string
+    description: Status of the enrollment (active, invited, etc.)
+    example: active
+  created_at:
+    type: datetime
+    description: When the enrollment was created
+    example: 2025-08-30T12:00:00Z
+  updated_at?:
+    type: datetime
+    description: When the enrollment was last updated
+  last_activity_at?:
+    type: datetime
+    description: Timestamp of last activity
+  limit_privileges_to_course_section?:
+    type: boolean
+    description: Whether privileges are limited to a section
+  sis_account_id?:
+    type: string
+  sis_course_id?:
+    type: string
+  sis_section_id?:
+    type: string
+  sis_user_id?:
+    type: string
