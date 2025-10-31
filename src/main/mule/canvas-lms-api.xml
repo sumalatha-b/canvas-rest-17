@@ -259,25 +259,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  user_id: 2,
-  account_id: 3,
-  unique_id: "bieber@example.com",
-  created_at: "2020-01-29T19:33:35Z",
-  sis_user_id: "2",
-  integration_id: "2",
-  authentication_provider_id: null,
-  workflow_state: "active",
-  declared_user_type: "teacher"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:put-accounts-account-id-logins-id doc:name="Login - Edit a user login" doc:id="daba1f3f-a72e-4bdb-8ea9-39700d7a14da" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" idUriParam="#[vars.id]"/>
     </flow>
     <flow name="put:\accounts\(account_id)\terms\(id):application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -286,29 +268,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  sis_term_id: "Sp2014",
-  sis_import_id: 34,
-  name: "Spring 2014",
-  start_at: "2014-01-06T08:00:00-05:00",
-  end_at: "2014-05-16T05:00:00-04:00",
-  workflow_state: "active",
-  overrides: {
-    StudentEnrollment: {
-      start_at: "2014-01-07T08:00:00-05:00",
-      end_at: "2014-05-14T05:00:00-04:00"
-    }
-  },
-  course_count: 80
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:put-accounts-account-id-terms-id doc:name="Enrollment Terms - Update enrollment term" doc:id="02f73a0c-e7d4-4a00-9af0-4f8716e9a07f" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" idUriParam="#[vars.id]"/>
     </flow>
     <flow name="put:\courses\(course_id)\enrollments\(id)\reactivate:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -317,70 +277,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  course_id: 1,
-  sis_course_id: "SHEL93921",
-  course_integration_id: "SHEL93921",
-  course_section_id: 1,
-  section_integration_id: "SHEL93921",
-  sis_account_id: "SHEL93921",
-  sis_section_id: "SHEL93921",
-  sis_user_id: "SHEL93921",
-  enrollment_state: "active",
-  limit_privileges_to_course_section: true,
-  sis_import_id: 83,
-  root_account_id: 1,
-  "type": "StudentEnrollment",
-  user_id: 1,
-  associated_user_id: null,
-  role: "StudentEnrollment",
-  role_id: 1,
-  created_at: "2012-04-18T23:08:51Z",
-  updated_at: "2012-04-18T23:08:51Z",
-  start_at: "2012-04-18T23:08:51Z",
-  end_at: "2012-04-18T23:08:51Z",
-  last_activity_at: "2012-04-18T23:08:51Z",
-  last_attended_at: "2012-04-18T23:08:51Z",
-  total_activity_time: 260,
-  html_url: "https://...",
-  grades: {
-    html_url: "https://...",
-    current_score: 35,
-    current_grade: null,
-    final_score: 6.67,
-    final_grade: null
-  },
-  user: {
-    id: 3,
-    name: "Student 1",
-    sortable_name: "1, Student",
-    short_name: "Stud 1"
-  },
-  override_grade: "A",
-  override_score: 99.99,
-  unposted_current_grade: "",
-  unposted_final_grade: "",
-  unposted_current_score: "",
-  unposted_final_score: "",
-  has_grading_periods: true,
-  totals_for_all_grading_periods_option: true,
-  current_grading_period_title: "Fall Grading Period",
-  current_grading_period_id: 5,
-  current_period_override_grade: "A",
-  current_period_override_score: 99.99,
-  current_period_unposted_current_score: 95.8,
-  current_period_unposted_final_score: 85.25,
-  current_period_unposted_current_grade: "A",
-  current_period_unposted_final_grade: "B"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:put-courses-course-id-enrollments-id-reactivate doc:name="Enrollment - Reactivate an enrollment" doc:id="c4b55cbf-c0fa-43c0-8ca6-f14ba3dc18c5" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]"/>
     </flow>
     <flow name="delete:\accounts\(account_id)\terms\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -389,33 +286,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  sis_term_id: "Sp2014",
-  sis_import_id: 34,
-  name: "Spring 2014",
-  start_at: "2014-01-06T08:00:00-05:00",
-  end_at: "2014-05-16T05:00:00-04:00",
-  workflow_state: "active",
-  overrides: {
-    StudentEnrollment: {
-      start_at: "2014-01-07T08:00:00-05:00",
-      end_at: "2014-05-14T05:00:00-04:00"
-    },
-    TeacherEnrollment: {
-      start_at: null,
-      end_at: "2014-05-20T05:00:00-04:00"
-    }
-  },
-  course_count: 80
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:delete-accounts-account-id-terms-id doc:name="Enrollment Terms - Delete enrollment term" doc:id="4270209e-b32e-430c-8cfd-1ab36598ac70" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="delete:\courses\(course_id)\enrollments\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -424,70 +295,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  course_id: 1,
-  sis_course_id: "SHEL93921",
-  course_integration_id: "SHEL93921",
-  course_section_id: 1,
-  section_integration_id: "SHEL93921",
-  sis_account_id: "SHEL93921",
-  sis_section_id: "SHEL93921",
-  sis_user_id: "SHEL93921",
-  enrollment_state: "active",
-  limit_privileges_to_course_section: true,
-  sis_import_id: 83,
-  root_account_id: 1,
-  "type": "StudentEnrollment",
-  user_id: 1,
-  associated_user_id: null,
-  role: "StudentEnrollment",
-  role_id: 1,
-  created_at: "2012-04-18T23:08:51Z",
-  updated_at: "2012-04-18T23:08:51Z",
-  start_at: "2012-04-18T23:08:51Z",
-  end_at: "2012-04-18T23:08:51Z",
-  last_activity_at: "2012-04-18T23:08:51Z",
-  last_attended_at: "2012-04-18T23:08:51Z",
-  total_activity_time: 260,
-  html_url: "https://...",
-  grades: {
-    html_url: "https://...",
-    current_score: 35,
-    current_grade: null,
-    final_score: 6.67,
-    final_grade: null
-  },
-  user: {
-    id: 3,
-    name: "Student 1",
-    sortable_name: "1, Student",
-    short_name: "Stud 1"
-  },
-  override_grade: "A",
-  override_score: 99.99,
-  unposted_current_grade: "",
-  unposted_final_grade: "",
-  unposted_current_score: "",
-  unposted_final_score: "",
-  has_grading_periods: true,
-  totals_for_all_grading_periods_option: true,
-  current_grading_period_title: "Fall Grading Period",
-  current_grading_period_id: 5,
-  current_period_override_grade: "A",
-  current_period_override_score: 99.99,
-  current_period_unposted_current_score: 95.8,
-  current_period_unposted_final_score: 85.25,
-  current_period_unposted_current_grade: "A",
-  current_period_unposted_final_grade: "B"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:delete-courses-course-id-enrollments-id doc:name="Enrollment - Conclude, deactivate, or delete an enrollment" doc:id="b98793f1-1f39-4fc8-8538-b1782c060603" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="delete:\users\(user_id)\logins\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -496,55 +304,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  unique_id: "bieber@example.com",
-  sis_user_id: null,
-  account_id: 1,
-  id: 12345,
-  user_id: 2
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="get:\accounts\(accountId)\terms\(termId):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:variables>
-                <ee:set-variable variableName="accountId">attributes.uriParams.'accountId'</ee:set-variable>
-                <ee:set-variable variableName="termId">attributes.uriParams.'termId'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  sis_term_id: "Sp2014",
-  sis_import_id: 34,
-  name: "Spring 2014",
-  start_at: "2014-01-06T08:00:00-05:00",
-  end_at: "2014-05-16T05:00:00-04:00",
-  workflow_state: "active",
-  overrides: {
-    StudentEnrollment: {
-      start_at: "2014-01-07T08:00:00-05:00",
-      end_at: "2014-05-14T05:00:00-04:00"
-    },
-    TeacherEnrollment: {
-      start_at: null,
-      end_at: "2014-05-20T05:00:00-04:00"
-    }
-  },
-  course_count: 80
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:delete-users-user-id-logins-id doc:name="Login - Delete a user login" doc:id="055ffe6d-ec1f-474f-9a07-676282fc504b" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\courses:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -552,82 +312,7 @@ output application/json
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 370663,
-  sis_course_id: null,
-  uuid: "WvAHhY5FINzq5IyRIJybGeiXyFkG3SqHUPb7jZY5",
-  integration_id: null,
-  sis_import_id: 34,
-  name: "InstructureCon 2012",
-  course_code: "INSTCON12",
-  original_name: "InstructureCon-2012-01",
-  workflow_state: "available",
-  account_id: 81259,
-  root_account_id: 81259,
-  enrollment_term_id: 34,
-  grading_periods: null,
-  grading_standard_id: 25,
-  grade_passback_setting: "nightly_sync",
-  created_at: "2012-05-01T00:00:00-06:00",
-  start_at: "2012-06-01T00:00:00-06:00",
-  end_at: "2012-09-01T00:00:00-06:00",
-  locale: "en",
-  enrollments: null,
-  total_students: 32,
-  calendar: null,
-  default_view: "feed",
-  syllabus_body: "<p>syllabus html goes here</p>",
-  needs_grading_count: 17,
-  term: null,
-  course_progress: null,
-  apply_assignment_group_weights: true,
-  permissions: {
-    create_discussion_topic: true,
-    create_announcement: true
-  },
-  is_public: true,
-  is_public_to_auth_users: true,
-  public_syllabus: true,
-  public_syllabus_to_auth: true,
-  public_description: "Come one, come all to InstructureCon 2012!",
-  storage_quota_mb: 5,
-  storage_quota_used_mb: 5,
-  hide_final_grades: false,
-  license: "Creative Commons",
-  allow_student_assignment_edits: false,
-  allow_wiki_comments: false,
-  allow_student_forum_attachments: false,
-  open_enrollment: true,
-  self_enrollment: false,
-  restrict_enrollments_to_course_dates: false,
-  course_format: "online",
-  access_restricted_by_date: false,
-  time_zone: "America/Denver",
-  blueprint: true,
-  blueprint_restrictions: {
-    content: true,
-    points: true,
-    due_dates: false,
-    availability_dates: false
-  },
-  blueprint_restrictions_by_object_type: {
-    assignment: {
-      content: true,
-      points: true
-    },
-    wiki_page: {
-      content: true
-    }
-  },
-  template: true
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-accounts-account-id-courses doc:name="Account - List active courses in an account" doc:id="12bc9fc5-0c9a-4413-92a7-3c7a682a3a75" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\enrollments\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -636,30 +321,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 120507116,
-  user_id: 118064555,
-  course_id: 12635863,
-  section_id: 11949585,
-  "type": "StudentEnrollment",
-  role: "student",
-  enrollment_state: "active",
-  created_at: "2025-08-30T12:00:00Z",
-  updated_at: "2025-08-31T14:00:00Z",
-  last_activity_at: "2025-08-31T15:00:00Z",
-  limit_privileges_to_course_section: false,
-  sis_account_id: "abc123",
-  sis_course_id: "course_sis_789",
-  sis_section_id: "section_sis_456",
-  sis_user_id: "user_sis_101"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-accounts-account-id-enrollments-id doc:name="Enrollment - Get enrollment by ID" doc:id="e84ce50a-90c6-4cfb-844b-cee5ea49e734" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\roles:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -667,38 +329,7 @@ output application/json
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  label: "New Role",
-  role: "New Role",
-  base_role_type: "AccountMembership",
-  is_account_role: true,
-  account: {
-    id: 1019,
-    name: "CGNU",
-    parent_account_id: 73,
-    root_account_id: 1,
-    sis_account_id: "cgnu"
-  },
-  workflow_state: "active",
-  created_at: "2020-12-01T16:20:00-06:00",
-  last_updated_at: "2023-10-31T23:59:00-06:00",
-  permissions: {
-    read_reports: {
-      enabled: true,
-      locked: false,
-      readonly: false,
-      explicit: false
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-accounts-account-id-roles doc:name="Roles - List roles" doc:id="12c889f3-01d7-40b9-8683-b76086fe5e2e" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" accountIdUriParam="#[vars.account_id]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\roles\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -707,38 +338,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  label: "New Role",
-  role: "New Role",
-  base_role_type: "AccountMembership",
-  is_account_role: true,
-  account: {
-    id: 1019,
-    name: "CGNU",
-    parent_account_id: 73,
-    root_account_id: 1,
-    sis_account_id: "cgnu"
-  },
-  workflow_state: "active",
-  created_at: "2020-12-01T16:20:00-06:00",
-  last_updated_at: "2023-10-31T23:59:00-06:00",
-  permissions: {
-    read_reports: {
-      enabled: true,
-      locked: false,
-      readonly: false,
-      explicit: false
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-accounts-account-id-roles-id doc:name="Roles - Get a single role" doc:id="c3cfe15e-5cbc-4419-8530-700602328e40" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\terms:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -746,33 +346,7 @@ output application/json
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  sis_term_id: "Sp2014",
-  sis_import_id: 34,
-  name: "Spring 2014",
-  start_at: "2014-01-06T08:00:00-05:00",
-  end_at: "2014-05-16T05:00:00-04:00",
-  workflow_state: "active",
-  overrides: {
-    StudentEnrollment: {
-      start_at: "2014-01-07T08:00:00-05:00",
-      end_at: "2014-05-14T05:00:00-04:00"
-    },
-    TeacherEnrollment: {
-      start_at: null,
-      end_at: "2014-05-20T05:00:00-04:00"
-    }
-  },
-  course_count: 80
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-accounts-account-id-terms doc:name="Enrollment Terms - List enrollment terms" doc:id="37fab65e-f44b-40b2-be57-b0d0c3a53801" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\terms\(id):canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -781,16 +355,7 @@ output application/json
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "Terms only belong to root_accounts."
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-accounts-account-id-terms-id doc:name="Enrollment Terms - Retrieve enrollment term" doc:id="6e1c283d-ecdc-472e-9b22-e035a96af836" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\assignment_groups:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -798,24 +363,7 @@ output application/json
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    id: 15118870,
-    name: "Assignments",
-    position: 1,
-    group_weight: 0,
-    sis_source_id: null,
-    integration_data: {},
-    rules: {}
-  }
-] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-courses-course-id-assignment-groups doc:name="Assignment Groups - List assignment groups" doc:id="0f28d1cd-e66c-422a-b4bf-35516c40cecb" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\assignment_groups\(assignment_group_id)\assignments:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -824,59 +372,7 @@ output application/json
                 <ee:set-variable variableName="assignment_group_id">attributes.uriParams.'assignment_group_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 12635863,
-  name: "science",
-  account_id: 81259,
-  uuid: "aP94gB2vYO9wEL1l3J7sU3KseHxef3UUvDa6zfnb",
-  start_at: null,
-  grading_standard_id: null,
-  is_public: false,
-  created_at: "2025-08-19T10:48:34Z",
-  course_code: "science",
-  default_view: "modules",
-  root_account_id: 10,
-  enrollment_term_id: 1,
-  license: null,
-  grade_passback_setting: null,
-  end_at: null,
-  public_syllabus: false,
-  public_syllabus_to_auth: false,
-  storage_quota_mb: 500,
-  is_public_to_auth_users: false,
-  homeroom_course: false,
-  course_color: null,
-  friendly_name: null,
-  hide_final_grades: false,
-  apply_assignment_group_weights: false,
-  calendar: {
-    ics: "https://canvas.instructure.com/feeds/calendars/course_aP94gB2vYO9wEL1l3J7sU3KseHxef3UUvDa6zfnb.ics"
-  },
-  time_zone: "America/Denver",
-  blueprint: false,
-  template: false,
-  sis_course_id: null,
-  integration_id: null,
-  enrollments: [
-    {
-      "type": "teacher",
-      role: "TeacherEnrollment",
-      role_id: 994,
-      user_id: 118064555,
-      enrollment_state: "active",
-      limit_privileges_to_course_section: false
-    }
-  ],
-  workflow_state: "unpublished",
-  restrict_enrollments_to_course_dates: false
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-courses-course-id-assignment-groups-assignment-group-id-assignments doc:name="Assignment - List assignments by assignment groups" doc:id="41b45794-d9de-4636-93f0-c3855599bbe4" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" assignmentGroupIdUriParam="#[vars.assignment_group_id]"/>
     </flow>
     <flow name="get:\courses\(course_id)\assignments:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -884,59 +380,7 @@ output application/json
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 12635863,
-  name: "science",
-  account_id: 81259,
-  uuid: "aP94gB2vYO9wEL1l3J7sU3KseHxef3UUvDa6zfnb",
-  start_at: null,
-  grading_standard_id: null,
-  is_public: false,
-  created_at: "2025-08-19T10:48:34Z",
-  course_code: "science",
-  default_view: "modules",
-  root_account_id: 10,
-  enrollment_term_id: 1,
-  license: null,
-  grade_passback_setting: null,
-  end_at: null,
-  public_syllabus: false,
-  public_syllabus_to_auth: false,
-  storage_quota_mb: 500,
-  is_public_to_auth_users: false,
-  homeroom_course: false,
-  course_color: null,
-  friendly_name: null,
-  hide_final_grades: false,
-  apply_assignment_group_weights: false,
-  calendar: {
-    ics: "https://canvas.instructure.com/feeds/calendars/course_aP94gB2vYO9wEL1l3J7sU3KseHxef3UUvDa6zfnb.ics"
-  },
-  time_zone: "America/Denver",
-  blueprint: false,
-  template: false,
-  sis_course_id: null,
-  integration_id: null,
-  enrollments: [
-    {
-      "type": "teacher",
-      role: "TeacherEnrollment",
-      role_id: 994,
-      user_id: 118064555,
-      enrollment_state: "active",
-      limit_privileges_to_course_section: false
-    }
-  ],
-  workflow_state: "unpublished",
-  restrict_enrollments_to_course_dates: false
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-courses-course-id-assignments doc:name="Assignment - List assignments" doc:id="18a8914b-f4a9-4787-8fcd-c80fd7290e17" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\enrollments:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -944,30 +388,7 @@ output application/json
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 120507116,
-  user_id: 118064555,
-  course_id: 12635863,
-  section_id: 11949585,
-  "type": "StudentEnrollment",
-  role: "student",
-  enrollment_state: "active",
-  created_at: "2025-08-30T12:00:00Z",
-  updated_at: "2025-08-31T14:00:00Z",
-  last_activity_at: "2025-08-31T15:00:00Z",
-  limit_privileges_to_course_section: false,
-  sis_account_id: "abc123",
-  sis_course_id: "course_sis_789",
-  sis_section_id: "section_sis_456",
-  sis_user_id: "user_sis_101"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-courses-course-id-enrollments doc:name="Enrollment - List course enrollments" doc:id="0ac5b975-82c0-477e-8440-c6d45ed86de6" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" courseIdUriParam="#[vars.course_id]"/>
     </flow>
     <flow name="get:\courses\(course_id)\students\submissions:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -975,31 +396,7 @@ output application/json
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    assignment_id: 100,
-    user_id: 1,
-    grade: "A",
-    score: 95,
-    attempt: 1,
-    submitted_at: "2025-09-01T10:10:00Z"
-  }, 
-  {
-    assignment_id: 101,
-    user_id: 2,
-    grade: "B+",
-    score: 88,
-    attempt: 2,
-    submitted_at: "2025-09-02T11:00:00Z"
-  }
-] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-courses-course-id-students-submissions doc:name="Submission - List submissions for multiple assignments" doc:id="feef3cdb-e456-4154-99f9-571a8eb16cde" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\sections\(section_id)\enrollments:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1007,30 +404,7 @@ output application/json
                 <ee:set-variable variableName="section_id">attributes.uriParams.'section_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 120507116,
-  user_id: 118064555,
-  course_id: 12635863,
-  section_id: 11949585,
-  "type": "StudentEnrollment",
-  role: "student",
-  enrollment_state: "active",
-  created_at: "2025-08-30T12:00:00Z",
-  updated_at: "2025-08-31T14:00:00Z",
-  last_activity_at: "2025-08-31T15:00:00Z",
-  limit_privileges_to_course_section: false,
-  sis_account_id: "abc123",
-  sis_course_id: "course_sis_789",
-  sis_section_id: "section_sis_456",
-  sis_user_id: "user_sis_101"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-sections-section-id-enrollments doc:name="Enrollment - List section enrollments" doc:id="dc6d0829-e3ea-4483-8ff7-c8bd66fc7e78" config-ref="Canvas_Config" sectionIdUriParam="#[vars.section_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\sections\(section_id)\students\submissions:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1038,31 +412,7 @@ output application/json
                 <ee:set-variable variableName="section_id">attributes.uriParams.'section_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    assignment_id: 100,
-    user_id: 1,
-    grade: "A",
-    score: 95,
-    attempt: 1,
-    submitted_at: "2025-09-01T10:10:00Z"
-  }, 
-  {
-    assignment_id: 101,
-    user_id: 2,
-    grade: "B+",
-    score: 88,
-    attempt: 2,
-    submitted_at: "2025-09-02T11:00:00Z"
-  }
-] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-sections-section-id-students-submissions doc:name="Submission - List submissions from course section" doc:id="0a3cee5a-4a13-4ae6-8ce4-8d0cdf2d50c7" config-ref="Canvas_Config" sectionIdUriParam="#[vars.section_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(user_id)\enrollments:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1070,30 +420,7 @@ output application/json
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 120507116,
-  user_id: 118064555,
-  course_id: 12635863,
-  section_id: 11949585,
-  "type": "StudentEnrollment",
-  role: "student",
-  enrollment_state: "active",
-  created_at: "2025-08-30T12:00:00Z",
-  updated_at: "2025-08-31T14:00:00Z",
-  last_activity_at: "2025-08-31T15:00:00Z",
-  limit_privileges_to_course_section: false,
-  sis_account_id: "abc123",
-  sis_course_id: "course_sis_789",
-  sis_section_id: "section_sis_456",
-  sis_user_id: "user_sis_101"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:get-users-user-id-enrollments doc:name="Enrollment - List enrollments of a user" doc:id="06c8a001-d407-44da-8b61-061cad0739cb" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\bulk_enrollment:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1101,29 +428,7 @@ output application/json
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  context_id: 1,
-  context_type: "Account",
-  user_id: 123,
-  tag: "course_batch_update",
-  completion: 100,
-  workflow_state: "completed",
-  created_at: "2013-01-15T15:00:00Z",
-  updated_at: "2013-01-15T15:04:00Z",
-  message: "17 courses processed",
-  results: {
-    id: "123"
-  },
-  url: "https://canvas.example.edu/api/v1/progress/1"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:post-accounts-account-id-bulk-enrollment doc:name="Enrollment - Enroll multiple users to one or more courses" doc:id="2ebdcc84-d41c-4304-b0bc-b452afbc8de0" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\logins:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1131,22 +436,7 @@ output application/json
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 98765,
-  user_id: 123,
-  unique_id: "112233445566",
-  sis_user_id: null,
-  integration_id: null,
-  authentication_provider_id: "facebook",
-  created_at: "2025-09-03T10:00:00Z"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:post-accounts-account-id-logins doc:name="Login - Create a user login" doc:id="0f81eb39-3854-4235-9755-2f0ef0670b43" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\terms:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1154,27 +444,7 @@ output application/json
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 2026,
-  name: "Spring 2026",
-  start_at: "2026-01-10T08:00:00Z",
-  end_at: "2026-05-20T23:59:00Z",
-  created_at: "2025-09-03T12:30:00Z",
-  sis_term_id: "SIS-TERM-2026",
-  overrides: {
-    StudentEnrollment: {
-      start_at: "2026-01-15T08:00:00Z",
-      end_at: "2026-05-15T23:59:00Z"
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:post-accounts-account-id-terms doc:name="Enrollment Terms - Create enrollment term" doc:id="19631b60-76e1-4f13-9c8b-b14db53984d9" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="post:\courses\(course_id)\enrollments:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1182,70 +452,7 @@ output application/json
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  course_id: 1,
-  sis_course_id: "SHEL93921",
-  course_integration_id: "SHEL93921",
-  course_section_id: 1,
-  section_integration_id: "SHEL93921",
-  sis_account_id: "SHEL93921",
-  sis_section_id: "SHEL93921",
-  sis_user_id: "SHEL93921",
-  enrollment_state: "active",
-  limit_privileges_to_course_section: true,
-  sis_import_id: 83,
-  root_account_id: 1,
-  "type": "StudentEnrollment",
-  user_id: 1,
-  associated_user_id: null,
-  role: "StudentEnrollment",
-  role_id: 1,
-  created_at: "2012-04-18T23:08:51Z",
-  updated_at: "2012-04-18T23:08:51Z",
-  start_at: "2012-04-18T23:08:51Z",
-  end_at: "2012-04-18T23:08:51Z",
-  last_activity_at: "2012-04-18T23:08:51Z",
-  last_attended_at: "2012-04-18T23:08:51Z",
-  total_activity_time: 260,
-  html_url: "https://canvas.example.com/courses/1/enrollments/1",
-  grades: {
-    html_url: "https://canvas.example.com/courses/1/grades",
-    current_score: 35,
-    current_grade: null,
-    final_score: 6.67,
-    final_grade: null
-  },
-  user: {
-    id: 3,
-    name: "Student 1",
-    sortable_name: "1, Student",
-    short_name: "Stud 1"
-  },
-  override_grade: "A",
-  override_score: 99.99,
-  unposted_current_grade: "",
-  unposted_final_grade: "",
-  unposted_current_score: "",
-  unposted_final_score: "",
-  has_grading_periods: true,
-  totals_for_all_grading_periods_option: true,
-  current_grading_period_title: "Fall Grading Period",
-  current_grading_period_id: 5,
-  current_period_override_grade: "A",
-  current_period_override_score: 99.99,
-  current_period_unposted_current_score: 95.8,
-  current_period_unposted_final_score: 85.25,
-  current_period_unposted_current_grade: "A",
-  current_period_unposted_final_grade: "B"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:post-courses-course-id-enrollments doc:name="Enrollment - Enroll a user in a course" doc:id="62396ce1-1ace-48a8-a997-b4e7b4509a34" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
     <flow name="post:\sections\(section_id)\enrollments:application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -1253,69 +460,6 @@ output application/json
                 <ee:set-variable variableName="section_id">attributes.uriParams.'section_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  id: 1,
-  course_id: 1,
-  sis_course_id: "SHEL93921",
-  course_integration_id: "SHEL93921",
-  course_section_id: 1,
-  section_integration_id: "SHEL93921",
-  sis_account_id: "SHEL93921",
-  sis_section_id: "SHEL93921",
-  sis_user_id: "SHEL93921",
-  enrollment_state: "active",
-  limit_privileges_to_course_section: true,
-  sis_import_id: 83,
-  root_account_id: 1,
-  "type": "StudentEnrollment",
-  user_id: 1,
-  associated_user_id: null,
-  role: "StudentEnrollment",
-  role_id: 1,
-  created_at: "2012-04-18T23:08:51Z",
-  updated_at: "2012-04-18T23:08:51Z",
-  start_at: "2012-04-18T23:08:51Z",
-  end_at: "2012-04-18T23:08:51Z",
-  last_activity_at: "2012-04-18T23:08:51Z",
-  last_attended_at: "2012-04-18T23:08:51Z",
-  total_activity_time: 260,
-  html_url: "https://canvas.example.com/courses/1/enrollments/1",
-  grades: {
-    html_url: "https://canvas.example.com/courses/1/grades",
-    current_score: 35,
-    current_grade: null,
-    final_score: 6.67,
-    final_grade: null
-  },
-  user: {
-    id: 3,
-    name: "Student 1",
-    sortable_name: "1, Student",
-    short_name: "Stud 1"
-  },
-  override_grade: "A",
-  override_score: 99.99,
-  unposted_current_grade: "",
-  unposted_final_grade: "",
-  unposted_current_score: "",
-  unposted_final_score: "",
-  has_grading_periods: true,
-  totals_for_all_grading_periods_option: true,
-  current_grading_period_title: "Fall Grading Period",
-  current_grading_period_id: 5,
-  current_period_override_grade: "A",
-  current_period_override_score: 99.99,
-  current_period_unposted_current_score: 95.8,
-  current_period_unposted_final_score: 85.25,
-  current_period_unposted_current_grade: "A",
-  current_period_unposted_final_grade: "B"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<canvas:post-sections-section-id-enrollments doc:name="Enrollment - Enroll a user in a section" doc:id="97b69248-37f1-49f3-8cab-52225c1a1546" config-ref="Canvas_Config" sectionIdUriParam="#[vars.section_id]" correlationIdHeader="#[correlationId]"/>
     </flow>
 </mule>
