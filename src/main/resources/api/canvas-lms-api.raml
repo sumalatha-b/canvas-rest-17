@@ -422,27 +422,6 @@ types:
             type: roles
             example: !include /examples/roles/roles-example.json
 
-/accounts/{accountId}/terms/{termId}:
-  uriParameters:
-    accountId:
-      type: string
-      required: true
-      example: "81259"
-    termId:
-      type: string
-      required: true
-      example: "102"
-  get:
-    is: [commonHeaders,errorResponse]
-    displayName: Enrollment Terms - Get enrollment term
-    description: Retrieve details for a single enrollment term.
-    responses:
-      200:
-        body:
-          application/json:
-            type: enrollmentTerms
-            example: !include /examples/enrollmentTerms/enrollmentTerms-example.json
-
 /courses/{course_id}/assignments:
   uriParameters:
     course_id:
@@ -616,7 +595,7 @@ types:
       example: "555666"
   get:
     is: [ enrollmentsTraits.enrollmentsQueryParams,commonHeaders,errorResponse ]
-    displayName: Enrollment - List enrollments of a user
+    displayName: Enrollment - List user enrollments
     description: Returns a paginated list of all enrollments for a user.
     responses:
       200:
