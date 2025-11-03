@@ -76,4 +76,101 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="44e6764c-77d4-4be4-8c48-5fb7ecef22f0" message="#[payload]"/>
 		<logger level="INFO" doc:name="Salesforce to Canvas Create Flow Ended Logger" doc:id="91c938d3-940e-4621-9b90-d37cbfdd2dd8" message="Salesforce to Canvas Create Flow Ended"/>
 	</flow>
+	<flow name="sftocanvasUpdateFlow" doc:id="614df472-3051-4041-97e3-0006f34f693b" >
+		<salesforce:modified-object-listener objectType="Course__c" doc:name="On Modified Object" doc:id="ae5fe999-181d-40ac-9ffe-e5a12b18d7ff" config-ref="Salesforce_Config" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="10000" />
+			</scheduling-strategy>
+		</salesforce:modified-object-listener>
+		<logger level="INFO" doc:name="Salesforce to Canvas Update Flow Started Logger" doc:id="630866cf-ba02-454d-acde-76579f88fa40" message="Salesforce to Canvas Update Flow Started" />
+		<logger level="INFO" doc:name="SF Payload Logger" doc:id="10fcdd7e-ff24-4935-b414-bf7362bd7a3c" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
+		<ee:transform doc:name="Canvas Request" doc:id="88e42599-00d3-4eca-a329-edaa0a4c2fb1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "course": {
+    	"account_id": payload.Canvas_Account_ID__c as Number,
+        "name": payload.Name default "",
+        "course_code": payload.Course_Code__c default "",
+        "start_at": payload.Start_At__c as String default "",
+        "end_at": payload.End_At__c as String default "",
+        "license": payload.License__c default "",
+        "is_public": payload.Is_Public__c as Boolean,
+        "is_public_to_auth_users": payload.Is_Public_to_Auth_Users__c as Boolean,
+        "public_syllabus": payload.Public_Syllabus__c as Boolean,
+        "public_syllabus_to_auth": payload.Public_Syllabus_to_Auth__c as Boolean,
+        "public_description": payload.Public_Description__c default "",
+        "allow_student_wiki_edits": payload.Allow_Student_Wiki_Edits__c as Boolean,
+        "allow_wiki_comments": payload.Allow_Wiki_Comments__c as Boolean,
+        "allow_student_forum_attachments": payload.Allow_Student_Forum_Attachments__c as Boolean,
+        "open_enrollment": payload.Open_Enrollment__c as Boolean,
+        "self_enrollment": payload.Self_Enrollment__c as Boolean,
+        "restrict_enrollments_to_course_dates": payload.Restrict_Enrollments_to_Course_Dates__c as Boolean,
+        "term_id": payload.Term_Id__c as Number default 1,
+        "sis_course_id": payload.SIS_Course_ID__c default "",
+        "hide_final_grades": payload.Hide_Final_Grades__c as Boolean,
+        "apply_assignment_group_weights": payload.Apply_Assignment_Group_Weights__c as Boolean,
+        "time_zone": payload.Time_Zone__c default "",
+        "default_view": payload.Default_View__c default "",
+        "syllabus_body": payload.Syllabus_Body__c default "",
+        "grade_passback_setting": payload.Grade_Passback_Setting__c default "",
+        "course_format": payload.Course_Format__c default "",
+        "post_manually": payload.Post_Manually__c as Boolean,
+		"account_id": payload.Canvas_Account_ID__c,
+        "integration_id": payload.Integration_Id__c,
+        "grading_standard_id": payload.Grading_Standard_ID__c,
+        "blueprint": payload.Blueprint__c,
+        "template": payload.Template__c,
+        "course_color": payload.Course_Color__c,
+        "friendly_name": payload.Friendly_Name__c,
+        "conditional_release": payload.Conditional_Release__c
+    },
+    "offer": payload.Offer__c default true,
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="id" ><![CDATA[payload.Canvas_Course_ID__c]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Canvas Request Logger" doc:id="5e4ec1a5-d08f-4a11-8e83-de5c9eaabffd" message="#[payload]" />
+		<canvas:put-courses-id doc:name="Course - Update a course" doc:id="8999670f-c4a2-4355-932a-c59abea36b6c" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<ee:transform doc:name="Canvas Response" doc:id="059095b5-c353-48c2-af48-51ed2844d915" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="b6b9797d-3e37-4f95-9cde-02a320ceb9cb" message="#[payload]" />
+		<logger level="INFO" doc:name="Salesforce to Canvas Update Flow Ended Logger" doc:id="a52fa4dd-9871-4d64-8b9c-e417eeba00c2" message="Salesforce to Canvas Update Flow Ended" />
+	</flow>
+	<flow name="sftocanvasDeleteFlow" doc:id="cd75e862-10b7-4718-85fd-da5794deaf64" >
+		<salesforce:deleted-object-listener objectType="Course__c" doc:name="On Deleted Object" doc:id="441bf641-14e8-4529-9987-ebae79771d89" config-ref="Salesforce_Config" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="10000" />
+			</scheduling-strategy>
+		</salesforce:deleted-object-listener>
+		<logger level="INFO" doc:name="Salesforce to Canvas Delete Flow Started Logger" doc:id="36111d14-ecb2-435e-b5a6-305287a1fa61" message="Salesforce to Canvas Delete Flow Started" />
+		<logger level="INFO" doc:name="SF Payload Logger" doc:id="cc758b75-759b-43ff-93b8-67ab61e6512f" message="#[payload]" />
+		<ee:transform doc:name="" doc:id="a717bc92-4de4-435c-a807-2c2360efe84a" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="id" ><![CDATA[payload.Canvas_Course_ID__c]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="c032d1a7-d7c9-4d3d-b266-cf3103472ba4" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam='#[attributes.queryParams.event default "conclude"]' correlationIdHeader="#[correlationId]" />
+		<ee:transform doc:name="canvasResponse" doc:id="0d74c3b5-dfb5-4976-ac9e-2098372c3f11" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="c2e7473c-8077-450c-beb4-6af994f98746" message="#[payload]" />
+		<logger level="INFO" doc:name="Salesforce to Canvas Delete Flow Ended Logger" doc:id="39231be8-8411-46ff-a90f-e3de770da88d" message="Salesforce to Canvas Delete Flow Ended" />
+	</flow>
 </mule>
