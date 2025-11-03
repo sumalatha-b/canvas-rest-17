@@ -187,7 +187,8 @@ output application/json --- payload default error.description]]]></http:body>
         <canvas:get-users-user-id-missing-submissions doc:name="User - List Missing Submissions" doc:id="816c58f4-b7b9-498d-9229-1a8cb19aa6a0" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" includeQueryParam="COURSE" filterQueryParam="SUBMITTABLE" correlationIdHeader="#[correlationId]" />
     </flow>
     <flow name="post:\accounts\(account_id)\courses:application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="d2319e34-3dcb-42a5-a3a8-80c25c2b8993" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/courses"/>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
