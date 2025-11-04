@@ -41,9 +41,9 @@ output application/json
         Grade_Passback_Setting__c: payload.grade_passback_setting,
         End_At__c: ((payload.start_at as DateTime as String {format: "yyyy-MM-dd'T'HH:mm:ss.SSS"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss.SSS"}),
         Public_Syllabus__c: payload.public_syllabus,
-        Public_Syllabus_To_Auth__c: payload.public_syllabus_to_auth,
+        Public_Syllabus_to_Auth__c: payload.public_syllabus_to_auth,
         Storage_Quota_MB__c: payload.storage_quota_mb,
-        Is_Public_To_Auth_Users__c: payload.is_public_to_auth_users,
+        Is_Public_to_Auth_Users__c: payload.is_public_to_auth_users,
         Homeroom_Course__c: payload.homeroom_course,
         Course_Color__c: payload.course_color,
         Friendly_Name__c: payload.friendly_name,
@@ -57,7 +57,7 @@ output application/json
         Integration_ID__c: payload.integration_id,
         Workflow_State__c: payload.workflow_state,
         Course_Format__c: payload.course_format,
-        Restrict_Enrollments_To_Course_Dates__c: payload.restrict_enrollments_to_course_dates
+        Restrict_Enrollments_to_Course_Dates__c: payload.restrict_enrollments_to_course_dates
     }
 ]
 ]]></ee:set-payload>
