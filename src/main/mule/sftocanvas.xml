@@ -160,7 +160,7 @@ payload]]></ee:set-payload>
 				<ee:set-variable variableName="id" ><![CDATA[payload.Canvas_Course_ID__c]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="c032d1a7-d7c9-4d3d-b266-cf3103472ba4" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam='#[attributes.queryParams.event default "conclude"]' correlationIdHeader="#[correlationId]" />
+		<canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="c032d1a7-d7c9-4d3d-b266-cf3103472ba4" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam='delete' correlationIdHeader="#[correlationId]" />
 		<ee:transform doc:name="canvasResponse" doc:id="0d74c3b5-dfb5-4976-ac9e-2098372c3f11" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
