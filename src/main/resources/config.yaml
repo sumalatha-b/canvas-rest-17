@@ -5,3 +5,8 @@ https:
 canvas:
   token: "Bearer 7~D38LH74ZTyB3hZC87cRUAwxTaUCu4xTZFU78TfJGWNX77Gxu3z66X3Mwz38Ycn9V"
   baseUri: "https://canvas.instructure.com/api/v1"
+
+sf:
+  username: "aurosmit.sahoo@nexturn.comauro.edu"
+  password: "Aurosmit@2001"
+  securityToken: "mlXoqVnVqAN6ciAVNNYyGG9Xz"

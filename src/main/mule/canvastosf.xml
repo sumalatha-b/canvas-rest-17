@@ -64,7 +64,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="SFRequest Payload Logger" doc:id="c2d0599e-40c7-4c80-b1a1-fe6f288c0a54" message="#[payload]" />
-		<salesforce:upsert doc:name="Upsert" doc:id="e007dd07-6c34-4087-a7da-e98d27c23a28" objectType="Course__c" externalIdFieldName="Canvas_Course_ID__c" config-ref="Salesforce_Config"/>
+		<salesforce:upsert doc:name="Upsert" doc:id="e007dd07-6c34-4087-a7da-e98d27c23a28" objectType="Canvas_Course__c" externalIdFieldName="Canvas_Course_ID__c" config-ref="Salesforce_Config"/>
 		<ee:transform doc:name="SFResponse" doc:id="eb1c5e85-337e-489d-b5f7-27d59da5d9cf">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -104,7 +104,7 @@ output application/json
 		</ee:transform>
 		<logger level="INFO" doc:name="SF Request Payload Logger" doc:id="8d3ad198-5cac-412b-8754-d17b3c8d482b" message="#[payload]" />
 		<salesforce:query doc:name="Query" doc:id="54814e78-90e2-4c4d-8cbe-f03e412d98a6" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query ><![CDATA[select id, Name from Course__c where Name = :Name]]></salesforce:salesforce-query>
+			<salesforce:salesforce-query ><![CDATA[select id, Name from Canvas_Course__c where Name = :Name]]></salesforce:salesforce-query>
 			<salesforce:parameters ><![CDATA[#[output application/java
 ---
 {

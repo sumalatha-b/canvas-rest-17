@@ -13,7 +13,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 http://www.mulesoft.org/schema/mule/canvas-rest-lms http://www.mulesoft.org/schema/mule/canvas-rest-lms/current/mule-canvas-rest-lms.xsd
 http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
 <salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="57ac21b4-aed7-497b-b683-b4a8f0681b10" >
-		<salesforce:basic-connection username="aurosmit.sahoo@nexturn.com.lms.educloud" password="Aurosmit@2001" securityToken="wEpfQlYMXv8VvhsNwrGqlptQl"/>
+		<salesforce:basic-connection username="${sf.username}" password="${sf.password}" securityToken="${sf.securityToken}"/>
 	</salesforce:sfdc-config>
 		<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="828ca4aa-5437-4f65-a203-ea8758ccb2e0" >
 		<http:listener-connection host="0.0.0.0" port="8082" />
