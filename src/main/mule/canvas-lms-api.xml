@@ -187,8 +187,8 @@ output application/json --- payload default error.description]]]></http:body>
         <canvas:get-users-user-id-missing-submissions doc:name="User - List Missing Submissions" doc:id="816c58f4-b7b9-498d-9229-1a8cb19aa6a0" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" includeQueryParam="COURSE" filterQueryParam="SUBMITTABLE" correlationIdHeader="#[correlationId]" />
     </flow>
     <flow name="post:\accounts\(account_id)\courses:application\json:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="d2319e34-3dcb-42a5-a3a8-80c25c2b8993" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/courses"/>
-		<ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="d2319e34-3dcb-42a5-a3a8-80c25c2b8993" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/courses" />
+        <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
@@ -448,6 +448,12 @@ output application/json --- payload default error.description]]]></http:body>
         <canvas:post-accounts-account-id-terms doc:name="Enrollment Terms - Create enrollment term" doc:id="19631b60-76e1-4f13-9c8b-b14db53984d9" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
     </flow>
     <flow name="post:\courses\(course_id)\enrollments:application\json:canvas-lms-api-config">
+        <http:listener doc:name="Listener" doc:id="7c2d33d8-98d2-4cf8-920b-6554c317a4df" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments">
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+            </http:error-response>
+        </http:listener>
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
@@ -456,6 +462,12 @@ output application/json --- payload default error.description]]]></http:body>
         <canvas:post-courses-course-id-enrollments doc:name="Enrollment - Enroll a user in a course" doc:id="62396ce1-1ace-48a8-a997-b4e7b4509a34" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
     </flow>
     <flow name="post:\sections\(section_id)\enrollments:application\json:canvas-lms-api-config">
+        <http:listener doc:name="Listener" doc:id="c4213bb6-df19-4742-aec3-57c07e92151d" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{section_id}/enrollments">
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+            </http:error-response>
+        </http:listener>
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="section_id">attributes.uriParams.'section_id'</ee:set-variable>
