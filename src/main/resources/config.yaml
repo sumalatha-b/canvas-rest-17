@@ -3,7 +3,7 @@ https:
   port: "8081"
   
 canvas:
-  token: "Bearer 7~D38LH74ZTyB3hZC87cRUAwxTaUCu4xTZFU78TfJGWNX77Gxu3z66X3Mwz38Ycn9V"
+  token: "Bearer 7~VKBnJf6Qhk9mKHKY39mZ8w4TATRc6wcXRUH38JcvxEfZZHWhcvEGKX9vWhTY9vLV"
   baseUri: "https://canvas.instructure.com/api/v1"
 
 sf:

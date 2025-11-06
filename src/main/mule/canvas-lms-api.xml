@@ -397,7 +397,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-students-submissions doc:name="Submission - List submissions for multiple assignments" doc:id="feef3cdb-e456-4154-99f9-571a8eb16cde" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+        <canvas:get-courses-course-id-students-submissions doc:name="Submission - List submissions for multiple assignments" doc:id="feef3cdb-e456-4154-99f9-571a8eb16cde" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" groupedQueryParam="#[(isEmpty(attributes.queryParams.grouped))]" postToSisQueryParam="#[(isEmpty(attributes.queryParams.post_to_sis))]" stateBasedOnDateQueryParam="#[(isEmpty(attributes.queryParams.state_based_on_date))]"/>
     </flow>
     <flow name="get:\sections\(section_id)\enrollments:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
