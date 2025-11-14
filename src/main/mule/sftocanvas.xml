@@ -63,17 +63,24 @@ payload.Canvas_Account_ID__c as Number]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="Canvas Request Logger" doc:id="d98f3f0e-3cd1-4fa2-94a7-99049403bd64" message="#[payload]"/>
-		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="708f04e6-24de-445f-8177-fde37cd038b7" config-ref="Canvas_Config" accountIdUriParam="#[vars.accountId]" correlationIdHeader="#[correlationId]"/>
-		<ee:transform doc:name="canvasResponse" doc:id="00aabb97-8dbc-42df-8569-656bf6424933" >
+		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="e932cd4b-8139-4aa6-a6f0-5190f69a2c19" config-ref="Canvas_Config" accountIdUriParam="#[vars.accountId]" correlationIdHeader="#[correlationId]" target="createCourseResponse" />
+		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="30fcb67c-4b92-4dae-81e5-d3d2a4a6024e" message="#[vars.createCourseResponse]" />
+		<ee:transform doc:name="Build Salesforce Update Payload" doc:id="3150a0a4-3339-48ce-a832-1bf66f7512db" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload]]></ee:set-payload>
+[
+	{
+		
+		Canvas_Course_ID__c: vars.createCourseResponse.id
+	}
+]]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="44e6764c-77d4-4be4-8c48-5fb7ecef22f0" message="#[payload]"/>
-		<logger level="INFO" doc:name="Salesforce to Canvas Create Flow Ended Logger" doc:id="91c938d3-940e-4621-9b90-d37cbfdd2dd8" message="Salesforce to Canvas Create Flow Ended"/>
+		<salesforce:upsert objectType="Canvas_Course__c" externalIdFieldName="Canvas_Course_ID__c" doc:name="Update Salesforce - Canvas Course ID" doc:id="4d797f67-970f-4b58-a391-d04fc5c58bea" config-ref="Salesforce_Config" />
+		<logger level="INFO" doc:name="Update SF Response Logger" doc:id="4ef6b3e0-dd7f-4cc3-a264-7d738a2e291d" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
+		<logger level="INFO" doc:name="Salesforce to Canvas Create Flow Ended Logger" doc:id="07bb61fb-418f-4814-bc26-375dafd0eab2" message="Salesforce to Canvas Create Flow Ended" />
 	</flow>
 	<flow name="sftocanvasUpdateFlow" doc:id="614df472-3051-4041-97e3-0006f34f693b" >
 		<salesforce:modified-object-listener objectType="Canvas_Course__c" doc:name="On Modified Object" doc:id="ae5fe999-181d-40ac-9ffe-e5a12b18d7ff" config-ref="Salesforce_Config" >
