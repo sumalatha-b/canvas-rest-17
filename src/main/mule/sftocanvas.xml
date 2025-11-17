@@ -79,7 +79,8 @@ output application/json
 ]]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<salesforce:upsert objectType="Canvas_Course__c" externalIdFieldName="Canvas_Course_ID__c" doc:name="Update Salesforce - Canvas Course ID" doc:id="4d797f67-970f-4b58-a391-d04fc5c58bea" config-ref="Salesforce_Config" />
+		<logger level="INFO" doc:name="SF Update Request Logger" doc:id="ad7c2dff-0d22-4233-ab47-aa2a6402e728" message="#[payload]"/>
+		<salesforce:upsert objectType="Canvas_Course__c" externalIdFieldName="Name" doc:name="Update Salesforce - Canvas Course ID" doc:id="4d797f67-970f-4b58-a391-d04fc5c58bea" config-ref="Salesforce_Config" />
 		<logger level="INFO" doc:name="Update SF Response Logger" doc:id="4ef6b3e0-dd7f-4cc3-a264-7d738a2e291d" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
 		<logger level="INFO" doc:name="Salesforce to Canvas Create Flow Ended Logger" doc:id="07bb61fb-418f-4814-bc26-375dafd0eab2" message="Salesforce to Canvas Create Flow Ended" />
 	</flow>
