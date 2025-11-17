@@ -73,7 +73,8 @@ output application/json
 [
 	{
 		
-		Canvas_Course_ID__c: vars.createCourseResponse.id
+		Canvas_Course_ID__c: vars.createCourseResponse.id as String,
+		Name: vars.createCourseResponse.name
 	}
 ]]]></ee:set-payload>
 			</ee:message>
