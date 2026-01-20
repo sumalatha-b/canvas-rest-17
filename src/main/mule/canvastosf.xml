@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/connectivity/canvas http://www.mulesoft.org/schem
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-course-by-id doc:name="Course - Get a single course" doc:id="f7c2f5be-d852-4717-95a4-0d6b6a055021" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:get-course-by-id doc:name="Course - Get a single course" doc:id="d12c0296-744d-4ee4-b601-2e0f20b80425" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
 		<ee:transform doc:name="sfRequestPayload" doc:id="e9232788-a1bf-4d28-aba6-f3ba9675d6ed">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -85,7 +85,7 @@ payload]]></ee:set-payload>
 				<ee:set-variable variableName="id" ><![CDATA[attributes.uriParams.'id']]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<canvas:get-course-by-id doc:name="Course - Get a single course" doc:id="5690c2bf-7ec8-4782-94c3-14e568e8861e" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:get-course-by-id doc:name="Course - Get a single course" doc:id="5337659c-1477-45c6-bef8-7122bab55b14" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
 		<ee:transform doc:name="sfRequestPayload" doc:id="8fd69977-2621-454c-a420-5f3d8ed4c5bb" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
