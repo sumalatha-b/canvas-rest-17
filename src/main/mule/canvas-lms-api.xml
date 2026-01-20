@@ -39,7 +39,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:update-course doc:name="Course - Update a course" doc:id="364c4dcf-76c3-488b-b9c4-ff903ac00ea3" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:update-course doc:name="Course - Update a course" doc:id="5ae2f306-8529-49b1-a22a-97c8408ae27c" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\sections\(id):application\json:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="98b1d435-7380-41e3-8773-ce4a66cb9c8e" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{id}" allowedMethods="PUT" >
@@ -53,7 +53,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:edit-section doc:name="Section - Edit a section" doc:id="86fb6b10-6c19-4e2e-ae2d-ac3bb07036b5" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:edit-section doc:name="Section - Edit a section" doc:id="74a0c2b4-7429-45fa-9000-715e94f344d4" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\users\(id):application\json:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="ea5f319d-4680-4b83-bfe8-095d9b52bcb6" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{id}" allowedMethods="PUT" >
@@ -67,7 +67,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:update-user doc:name="User - Edit a user" doc:id="b0e1a6e7-f0aa-4945-a6a4-ec62010bcf0d" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:update-user doc:name="User - Edit a user" doc:id="fbbc92de-ee14-44e1-9fa5-74f92af13002" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\courses\(id):canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="600df07c-4fd0-421a-ad59-dab947a11740" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}" allowedMethods="DELETE" >
@@ -81,7 +81,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:delete-course doc:name="Course - Delete/Conclude a course" doc:id="a93aa1eb-7e0f-4edd-874d-6d04e3df80ed" id="#[vars.id]" event='#[attributes.queryParams.event default "Conclude"]' correlationId="#[correlationId]"/>
+		<canvas:delete-course doc:name="Course - Delete/Conclude a course" doc:id="db88b734-2518-4716-8d44-afaa37672909" config-ref="Canvas_config" id="#[vars.id]" event='#[attributes.queryParams.event default "Conclude"]' correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\sections\(id):canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="2ff08560-2bcf-4bc9-8252-8dad206df481" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{id}" allowedMethods="DELETE" >
@@ -95,7 +95,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:delete-section doc:name="Section - Delete a section" doc:id="439eb3dc-ed3d-443d-874d-d3a6066b0445" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:delete-section doc:name="Section - Delete a section" doc:id="a37d7a0d-a398-48e8-be55-4c2d6258d0ce" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\sections\(id)\crosslist:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="fa182664-274c-400f-bf92-8d5f4148c237" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{id}/crosslist" allowedMethods="DELETE" >
