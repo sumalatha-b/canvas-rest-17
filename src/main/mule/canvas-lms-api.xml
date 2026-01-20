@@ -368,7 +368,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:update-enrollment-term doc:name="Enrollment Terms - Update enrollment term" doc:id="10c1e982-8ef7-4e4d-b6bb-51ba90038e5a" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:update-enrollment-term doc:name="Enrollment Terms - Update enrollment term" doc:id="878a5e5b-0b82-4c64-8001-fc78175f52c2" config-ref="Canvas_config" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\courses\(course_id)\enrollments\(id)\reactivate:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="d8cff16b-2c33-46a0-9db7-4c54311fe98f" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments/{id}/reactivate" allowedMethods="PUT" />
@@ -378,7 +378,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:reactivate-enrollment doc:name="Enrollment - Reactivate an enrollment" doc:id="85cf8525-0f7a-4c5c-8e11-c6a0071bb4cb" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:reactivate-enrollment doc:name="Enrollment - Reactivate an enrollment" doc:id="a3e9261a-b0ae-45f0-86a1-8d918f149cd8" config-ref="Canvas_config" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\accounts\(account_id)\terms\(id):canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="1e216e53-b0e2-431b-ad22-6511b5380807" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/terms/{id}" allowedMethods="DELETE" />
@@ -388,7 +388,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:delete-enrollment-term doc:name="Enrollment Terms - Delete enrollment term" doc:id="32aee6a4-48dd-47c5-aa27-11cc1fcb995f" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:delete-enrollment-term doc:name="Enrollment Terms - Delete enrollment term" doc:id="baf77ba0-2b47-4713-ab30-e30dcab824ae" config-ref="Canvas_config" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\courses\(course_id)\enrollments\(id):canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="75e2a88c-f407-418c-8e2a-f34338d11760" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments/{id}" allowedMethods="DELETE" />
@@ -398,7 +398,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:conclude-enrollment doc:name="Enrollment - Conclude , deactivate , or delete an enrollment" doc:id="e2ed2e3e-52be-4d0b-8bf6-926d987a1e3b" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:conclude-enrollment doc:name="Enrollment - Conclude , deactivate , or delete an enrollment" doc:id="70ae3e7e-2c25-4f9e-91f2-53997bee1dc8" config-ref="Canvas_config" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\users\(user_id)\logins\(id):canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="5caf056c-360b-4eb9-a97b-c29c5656e401" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/logins/{id}" allowedMethods="DELETE" />
@@ -408,7 +408,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:delete-user-login doc:name="Login - Delete a user login" doc:id="6d9d29f4-f3a8-474f-9131-419a330f1a6d" user_id="#[vars.user_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:delete-user-login doc:name="Login - Delete a user login" doc:id="011ab30e-d88c-477e-8656-4d5796e28769" config-ref="Canvas_config" user_id="#[vars.user_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\courses:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="1a0e73fe-9b26-4fa5-a59b-eb8c821b8da0" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/courses" allowedMethods="GET" />
@@ -417,7 +417,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:list-account-courses doc:name="Account - List active courses in an account" doc:id="cb3de3be-6da1-4bce-b997-67ac128b95f4" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
+		<canvas:list-account-courses doc:name="Account - List active courses in an account" doc:id="eb3de4c0-bfa4-45c4-b6af-05923427cc30" config-ref="Canvas_config" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\enrollments\(id):canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="d8c7cb45-4eae-40e8-8af0-9b019454a1c2" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/enrollments/{id}" allowedMethods="GET" />
@@ -427,7 +427,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-enrollment-by-id doc:name="Enrollment - Get enrollment by ID" doc:id="e78320f9-636e-4fd1-a989-844a989034fb" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:get-enrollment-by-id doc:name="Enrollment - Get enrollment by ID" doc:id="f63fae6b-65a5-4037-b007-babb2e6a9672" config-ref="Canvas_config" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\roles:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="2a129b80-8d9c-4d31-b744-10ebc73f0570" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/roles" allowedMethods="GET" />
