@@ -195,7 +195,6 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-course-user doc:name="Course - Get single user" doc:id="62698f76-f7fa-4335-ab58-20f138116dc3" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
 		<canvas:get-course-user doc:name="Course - Get single user" doc:id="f9a7de5b-ca10-4cd9-82eb-c4879c1e1003" config-ref="Canvas_config" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\users\(user_id)\progress:canvas-lms-api-config">
@@ -225,7 +224,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-course-by-id doc:name="Course - Get a single course" doc:id="2b79fe36-8210-49b1-8a64-3ef6351e0c8f" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:get-course-by-id doc:name="Course - Get a single course" doc:id="6256f67f-349e-4163-be1e-425ca7f1bf2f" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\self\upcoming_events:canvas-lms-api-config">
 		<http:listener doc:name="Listener" doc:id="61aa2d2a-68a4-46ba-825a-8196beb9a607" config-ref="canvas-lms-api-httpListenerConfig" path="/users/self/upcoming_events" allowedMethods="GET" >
@@ -234,7 +233,7 @@ output application/json --- payload default error.description]]]></http:body>
 output application/json --- payload default error.description]]]></http:body>
 			</http:error-response>
 		</http:listener>
-		<canvas:get-upcoming-events doc:name="User - List upcomimg assignment, calender events" doc:id="dc7ccc71-d7a4-4055-b1ee-b14c41c12f7b" correlationId="#[correlationId]"/>
+		<canvas:get-upcoming-events doc:name="User - List upcomimg assignment, calender events" doc:id="e3f10af2-af6f-498e-a3d8-a47ee6dafa9d" config-ref="Canvas_config" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(id):canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="7bb1584d-ae2e-43a5-9d0f-e07b94dcf476" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{id}" allowedMethods="GET" >
@@ -248,7 +247,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-user-by-id doc:name="User - Show user details" doc:id="d639c5ef-e48a-4bc5-bc6c-fcacef0490a8" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:get-user-by-id doc:name="User - Show user details" doc:id="f7290ed0-7174-41bb-aadc-bc0da2d03846" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(user_id)\courses:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="142aadf9-9ddb-4289-b95e-fe75b7831559" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/courses" allowedMethods="GET">
@@ -262,7 +261,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<canvas:get-user-courses doc:name="Course - Get single user" doc:id="e5db6a68-30bf-4e4d-8995-d4387dba4892" user_id="#[vars.user_id]" correlationId="#[correlationId]"/>
+		<canvas:get-user-courses doc:name="Course - List courses for users" doc:id="c63b74d4-5739-4e9a-ba0e-aa60320521eb" config-ref="Canvas_config" user_id="#[vars.user_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(user_id)\missing_submissions:canvas-lms-api-config">
         <http:listener doc:name="Listener" doc:id="78160272-7b74-464f-9b64-cf4f9caf926b" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/missing_submissions" allowedMethods="GET" >
