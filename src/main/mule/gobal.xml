@@ -11,7 +11,8 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/canvas-rest-lms http://www.mulesoft.org/schema/mule/canvas-rest-lms/current/mule-canvas-rest-lms.xsd
-http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
+http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd
+http://www.mulesoft.org/schema/connectivity/canvas http://www.mulesoft.org/schema/connectivity/canvas/current/mule-canvas.xsd">
 <salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="57ac21b4-aed7-497b-b683-b4a8f0681b10" >
 		<salesforce:basic-connection username="${sf.username}" password="${sf.password}" securityToken="${sf.securityToken}"/>
 	</salesforce:sfdc-config>
@@ -28,7 +29,7 @@ http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/c
     <apikit:config name="canvas-lms-api-config" api="canvas-lms-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<configuration-properties doc:name="Configuration properties" doc:id="e5dddb1f-64af-4c93-9632-f326a933a339" file="config.yaml" />
 	<configuration doc:name="Configuration" doc:id="e9e914ec-58c4-47a5-80c5-10e21d8d3ebf" defaultErrorHandler-ref="Global-Error-Handler" />
-	<canvas:config name="Canvas_Config" doc:name="Canvas Config" doc:id="69c01e25-1023-4c58-aeb9-265571d5fa40" >
-		<canvas:authorization-connection authorizationHeader="${canvas.token}" baseUri="${canvas.baseUri}"/>
+	<canvas:config name="Canvas_config" doc:name="Canvas config" doc:id="b54b3bf0-91ed-4835-803f-f9fc2d49a59a" >
+		<canvas:bearer-auth-connection baseUri="${canvas.baseUri}" token="${canvas.token}" />
 	</canvas:config>
 </mule>

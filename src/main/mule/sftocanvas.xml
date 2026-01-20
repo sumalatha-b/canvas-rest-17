@@ -6,9 +6,10 @@
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/canvas-rest-lms http://www.mulesoft.org/schema/mule/canvas-rest-lms/current/mule-canvas-rest-lms.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
+http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd
+http://www.mulesoft.org/schema/connectivity/canvas http://www.mulesoft.org/schema/connectivity/canvas/current/mule-canvas.xsd">
 	<flow name="sftocanvasCreateFlow" doc:id="e9fa4f4a-dd3c-4cde-a92f-449b28bb3a64" >
-		<salesforce:new-object-listener objectType="Canvas_Course__c" doc:name="On New Object" doc:id="3a921432-45d6-410a-a997-3be078f4b634" config-ref="Salesforce_Config">
+		<salesforce:new-object-listener objectType="Course__c" doc:name="On New Object" doc:id="3a921432-45d6-410a-a997-3be078f4b634" config-ref="Salesforce_Config">
 			<scheduling-strategy >
 				<fixed-frequency />
 			</scheduling-strategy>
@@ -63,7 +64,7 @@ payload.Canvas_Account_ID__c as Number]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="Canvas Request Logger" doc:id="d98f3f0e-3cd1-4fa2-94a7-99049403bd64" message="#[payload]"/>
-		<canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="e932cd4b-8139-4aa6-a6f0-5190f69a2c19" config-ref="Canvas_Config" accountIdUriParam="#[vars.accountId]" correlationIdHeader="#[correlationId]" target="createCourseResponse" />
+		<canvas:create-course doc:name="Course - Create a new course" doc:id="2c3170f5-d038-41ee-b57d-a010617f6767" account_id="#[vars.accountId]" correlationId="#[correlationId]"/>
 		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="30fcb67c-4b92-4dae-81e5-d3d2a4a6024e" message="#[vars.createCourseResponse]" />
 		<ee:transform doc:name="Build Salesforce Update Payload" doc:id="3150a0a4-3339-48ce-a832-1bf66f7512db" >
 			<ee:message >
@@ -80,12 +81,12 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="SF Update Request Logger" doc:id="ad7c2dff-0d22-4233-ab47-aa2a6402e728" message="#[payload]"/>
-		<salesforce:upsert objectType="Canvas_Course__c" externalIdFieldName="Name" doc:name="Update Salesforce - Canvas Course ID" doc:id="4d797f67-970f-4b58-a391-d04fc5c58bea" config-ref="Salesforce_Config" />
+		<salesforce:upsert objectType="Course__c" externalIdFieldName="Name" doc:name="Update Salesforce - Canvas Course ID" doc:id="4d797f67-970f-4b58-a391-d04fc5c58bea" config-ref="Salesforce_Config" />
 		<logger level="INFO" doc:name="Update SF Response Logger" doc:id="4ef6b3e0-dd7f-4cc3-a264-7d738a2e291d" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
 		<logger level="INFO" doc:name="Salesforce to Canvas Create Flow Ended Logger" doc:id="07bb61fb-418f-4814-bc26-375dafd0eab2" message="Salesforce to Canvas Create Flow Ended" />
 	</flow>
 	<flow name="sftocanvasUpdateFlow" doc:id="614df472-3051-4041-97e3-0006f34f693b" >
-		<salesforce:modified-object-listener objectType="Canvas_Course__c" doc:name="On Modified Object" doc:id="ae5fe999-181d-40ac-9ffe-e5a12b18d7ff" config-ref="Salesforce_Config" >
+		<salesforce:modified-object-listener objectType="Course__c" doc:name="On Modified Object" doc:id="ae5fe999-181d-40ac-9ffe-e5a12b18d7ff" config-ref="Salesforce_Config" >
 			<scheduling-strategy >
 				<fixed-frequency frequency="10000" />
 			</scheduling-strategy>
@@ -142,7 +143,7 @@ output application/json
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="Canvas Request Logger" doc:id="5e4ec1a5-d08f-4a11-8e83-de5c9eaabffd" message="#[payload]" />
-		<canvas:put-courses-id doc:name="Course - Update a course" doc:id="8999670f-c4a2-4355-932a-c59abea36b6c" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:update-course doc:name="Course - Update a course" doc:id="3b74b5b2-c5fd-4796-861f-32d6f00dd78e" id="#[vars.id]" correlationId="#[correlationId]"/>
 		<ee:transform doc:name="Canvas Response" doc:id="059095b5-c353-48c2-af48-51ed2844d915" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -155,7 +156,7 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="Salesforce to Canvas Update Flow Ended Logger" doc:id="a52fa4dd-9871-4d64-8b9c-e417eeba00c2" message="Salesforce to Canvas Update Flow Ended" />
 	</flow>
 	<flow name="sftocanvasDeleteFlow" doc:id="cd75e862-10b7-4718-85fd-da5794deaf64" >
-		<salesforce:deleted-object-listener objectType="Canvas_Course__c" doc:name="On Deleted Object" doc:id="441bf641-14e8-4529-9987-ebae79771d89" config-ref="Salesforce_Config" >
+		<salesforce:deleted-object-listener objectType="Course__c" doc:name="On Deleted Object" doc:id="441bf641-14e8-4529-9987-ebae79771d89" config-ref="Salesforce_Config" >
 			<scheduling-strategy >
 				<fixed-frequency frequency="10000" />
 			</scheduling-strategy>
@@ -168,7 +169,7 @@ payload]]></ee:set-payload>
 				<ee:set-variable variableName="id" ><![CDATA[payload.Canvas_Course_ID__c]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="c032d1a7-d7c9-4d3d-b266-cf3103472ba4" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam='delete' correlationIdHeader="#[correlationId]" />
+		<canvas:delete-course doc:name="Course - Delete/Conclude a course" doc:id="ff5c3062-532e-44d0-a975-bd7a1cb2c585" id="#[vars.id]" event='#["Conclude"]' correlationId="#[correlationId]"/>
 		<ee:transform doc:name="canvasResponse" doc:id="0d74c3b5-dfb5-4976-ac9e-2098372c3f11" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

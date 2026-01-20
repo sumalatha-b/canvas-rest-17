@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:canvas="http://www.mulesoft.org/schema/mule/canvas" xmlns:canvaslms="http://www.mulesoft.org/schema/mule/canvaslms" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/canvaslms http://www.mulesoft.org/schema/mule/canvaslms/current/mule-canvaslms.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:canvas="http://www.mulesoft.org/schema/mule/canvas" xmlns:canvaslms="http://www.mulesoft.org/schema/mule/canvaslms" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/canvaslms http://www.mulesoft.org/schema/mule/canvaslms/current/mule-canvaslms.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/canvas http://www.mulesoft.org/schema/mule/canvas/current/mule-canvas.xsd
+http://www.mulesoft.org/schema/connectivity/canvas http://www.mulesoft.org/schema/connectivity/canvas/current/mule-canvas.xsd">
     <flow name="canvas-lms-api-main">
         <http:listener config-ref="canvas-lms-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -27,7 +28,7 @@
         <error-handler ref="Global-Error-Handler" />
     </flow>
     <flow name="put:\courses\(id):application\json:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="9949cd55-f6b6-4c96-b99f-35c2b64c0dac" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}">
+        <http:listener doc:name="Listener" doc:id="9949cd55-f6b6-4c96-b99f-35c2b64c0dac" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}" allowedMethods="PUT">
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[%dw 2.0
 output application/json --- payload default error.description]]]></http:body>
@@ -38,74 +39,122 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:put-courses-id doc:name="Course - Update a course" doc:id="5ef5ce9e-4b09-489c-9a4c-86e25975a925" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:update-course doc:name="Course - Update a course" doc:id="364c4dcf-76c3-488b-b9c4-ff903ac00ea3" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\sections\(id):application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="98b1d435-7380-41e3-8773-ce4a66cb9c8e" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{id}" allowedMethods="PUT" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:put-sections-id doc:name="Section - Edit a section" doc:id="97db6289-387c-4b2a-a0f4-31d7455913bd" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:edit-section doc:name="Section - Edit a section" doc:id="86fb6b10-6c19-4e2e-ae2d-ac3bb07036b5" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\users\(id):application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="ea5f319d-4680-4b83-bfe8-095d9b52bcb6" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{id}" allowedMethods="PUT" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:put-users-id doc:name="User - Edit a user" doc:id="6a82d831-265a-4036-bab2-8290c37683f8" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:update-user doc:name="User - Edit a user" doc:id="b0e1a6e7-f0aa-4945-a6a4-ec62010bcf0d" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\courses\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="600df07c-4fd0-421a-ad59-dab947a11740" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}" allowedMethods="DELETE" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:delete-courses-id doc:name="Course - Delete/Conclude a course" doc:id="2e185e35-bffa-4ad6-972d-f986ee55fe8e" config-ref="Canvas_Config" idUriParam="#[vars.id]" eventQueryParam="#[attributes.queryParams.event default &quot;conclude&quot;]" correlationIdHeader="#[correlationId]" />
+		<canvas:delete-course doc:name="Course - Delete/Conclude a course" doc:id="a93aa1eb-7e0f-4edd-874d-6d04e3df80ed" id="#[vars.id]" event='#[attributes.queryParams.event default "Conclude"]' correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\sections\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="2ff08560-2bcf-4bc9-8252-8dad206df481" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{id}" allowedMethods="DELETE" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:delete-sections-id doc:name="Section - Delete a section" doc:id="4d938bf6-bf29-42dd-ab45-3ca718f1aae9" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:delete-section doc:name="Section - Delete a section" doc:id="439eb3dc-ed3d-443d-874d-d3a6066b0445" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\sections\(id)\crosslist:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="fa182664-274c-400f-bf92-8d5f4148c237" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{id}/crosslist" allowedMethods="DELETE" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:delete-sections-id-crosslist doc:name="Section - De-cross-list a section" doc:id="ecccf39a-f939-4bc4-b4c5-5ce82bcb5036" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:de-crosslist-section doc:name="Section - De-cross-list a section" doc:id="d4935df0-336b-47ac-9993-4e736465b21b" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\users:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="cba777ea-e174-4693-8854-77822cfb81e8" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/users" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-users doc:name="User - List users in account" doc:id="5a6fc3bd-94d6-4ec9-a503-415a9736eb89" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-account-users doc:name="User - List users in account" doc:id="17478e6d-adae-4471-82c8-6b995aa586ba" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\bulk_user_progress:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="150722ae-2a8c-43f3-be66-2841e3766e00" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/bulk_user_progress" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-bulk-user-progress doc:name="Course - Get bulk user progress" doc:id="15ca92e3-2289-4517-903b-f4bc59e604c3" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-bulk-user-progress doc:name="Course - Get bulk user progress" doc:id="08b41b54-32fa-4bc7-8150-4948e5967335" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\search_users:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="0a9efe3e-dce3-4e09-bd72-35043023d651" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/search_users" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-search-users doc:name="Course - List users in course" doc:id="37c463b1-d290-4535-873d-c9ce2b4efed2" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:search-course-users doc:name="Course - List users in course" doc:id="b2f44d18-ec59-4bbb-9a02-4a9917631456" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\sections:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="e1674a6d-0e2f-4b2e-8199-f706f1b5bd68" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/sections">
+        <http:listener doc:name="Listener" doc:id="e1674a6d-0e2f-4b2e-8199-f706f1b5bd68" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/sections" allowedMethods="GET">
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[%dw 2.0
 output application/json --- payload default error.description]]]></http:body>
@@ -116,56 +165,92 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-sections doc:name="Section - List course sections" doc:id="07ac8da6-5851-4c22-be31-b01b71dd2a89" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-course-sections doc:name="Section - List course sections" doc:id="7ac99901-a3bd-4a38-8c4d-d0fa0513f719" course_id="#[vars.course_id]"/>
     </flow>
     <flow name="get:\courses\(course_id)\sections\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="e20b8c17-1987-4cb9-90f1-ac85a0da93a9" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/sections/{id}" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-sections-id doc:name="Section - Get section information" doc:id="9833b463-3630-4ee5-bb0e-8b697e1c9ebe" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-section-info doc:name="Section - Get section information" doc:id="961fce3f-43c1-44e0-89b1-c4d6d24380ca" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\users\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="4dcf6fbc-98cb-4aaa-b95e-b1937c0ae709" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/users/{id}" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-users-id doc:name="Course - Get single user" doc:id="e1d51fc0-faf8-4f90-9214-5c8c17764a52" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-course-user doc:name="Course - Get single user" doc:id="62698f76-f7fa-4335-ab58-20f138116dc3" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\users\(user_id)\progress:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="1502358f-782d-4b17-bbc5-4698dcb2050d" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/users/{user_id}/progress" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-users-user-id-progress doc:name="Course - Get user progress" doc:id="99e09fef-2990-4679-8fc9-ae0297a3958e" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" userIdUriParam="#[vars.user_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-user-progress doc:name="Course - Get user progress" doc:id="047474ff-19ca-4c9f-9088-7fa24ff3482f" course_id="#[vars.course_id]" user_id="#[vars.user_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="cee113e0-b2f5-42cb-b504-af0b00ece24d" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{id}" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-id doc:name="Course - Get a single course" doc:id="deb041f8-e414-4ae1-bc77-65862bc95445" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-course-by-id doc:name="Course - Get a single course" doc:id="2b79fe36-8210-49b1-8a64-3ef6351e0c8f" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\self\upcoming_events:canvas-lms-api-config">
-        <canvas:get-users-self-upcoming-events doc:name="User - List upcoming assignments, calendar events" doc:id="fcd6ed5a-1b24-49a5-b53f-67e78e90ceda" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" />
+		<http:listener doc:name="Listener" doc:id="61aa2d2a-68a4-46ba-825a-8196beb9a607" config-ref="canvas-lms-api-httpListenerConfig" path="/users/self/upcoming_events" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<canvas:get-upcoming-events doc:name="User - List upcomimg assignment, calender events" doc:id="dc7ccc71-d7a4-4055-b1ee-b14c41c12f7b" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="7bb1584d-ae2e-43a5-9d0f-e07b94dcf476" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{id}" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-users-id doc:name="User - Show user details" doc:id="a8f9d602-8dc1-4cb0-8844-e98f017e0270" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-user-by-id doc:name="User - Show user details" doc:id="d639c5ef-e48a-4bc5-bc6c-fcacef0490a8" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(user_id)\courses:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="142aadf9-9ddb-4289-b95e-fe75b7831559" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/courses">
+        <http:listener doc:name="Listener" doc:id="142aadf9-9ddb-4289-b95e-fe75b7831559" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/courses" allowedMethods="GET">
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[%dw 2.0
 output application/json --- payload default error.description]]]></http:body>
@@ -176,68 +261,82 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-users-user-id-courses doc:name="Course - List courses for a user" doc:id="4c593d63-7a66-4eae-8b75-d2e39855d2a1" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-user-courses doc:name="Course - Get single user" doc:id="e5db6a68-30bf-4e4d-8995-d4387dba4892" user_id="#[vars.user_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(user_id)\missing_submissions:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="78160272-7b74-464f-9b64-cf4f9caf926b" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/missing_submissions" allowedMethods="GET" >
+			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json --- payload default error.description]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-users-user-id-missing-submissions doc:name="User - List Missing Submissions" doc:id="816c58f4-b7b9-498d-9229-1a8cb19aa6a0" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" includeQueryParam="COURSE" filterQueryParam="SUBMITTABLE" correlationIdHeader="#[correlationId]" />
+		<canvas:get-missing-submissions doc:name="Users - List Missing Submissions" doc:id="529823e6-94bb-4794-b730-f0bb8fc8dba1" user_id="#[vars.user_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\courses:application\json:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="d2319e34-3dcb-42a5-a3a8-80c25c2b8993" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/courses" />
+        <http:listener doc:name="Listener" doc:id="d2319e34-3dcb-42a5-a3a8-80c25c2b8993" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/courses" allowedMethods="POST"/>
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-accounts-account-id-courses doc:name="Course - Create a new course" doc:id="c4731fd4-f0b6-44e8-93c9-f5bed5cab41f" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:create-course doc:name="Course - Create a new course" doc:id="4899858a-8501-4c9b-a952-f2ef2c603395" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\users:application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="a84c6a13-9149-4b2c-b6a1-c0ba1d2b9043" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/users" allowedMethods="POST" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-accounts-account-id-users doc:name="User - Create a user" doc:id="7bbcf6fc-df5e-4db4-81cf-b657aa0b1f33" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:create-user doc:name="User - Create a user" doc:id="7cb80b47-9baa-432b-bb8d-4bea342e0021" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\courses\(course_id)\sections:application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="1ebcf904-19fd-46a5-a6ce-e122739d7761" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/sections" allowedMethods="POST" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-courses-course-id-sections doc:name="Section - Create course section" doc:id="480c38c7-5104-4432-aefa-7978ea660d2b" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:create-course-section doc:name="Section - Create course section" doc:id="6f2cf330-bff6-4b9c-bd0b-ebcd304df23e" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\sections\(id)\crosslist\(new_course_id):application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="0c3620d2-6e35-4043-815e-663747c9d7bd" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{id}/crosslist/{new_course_id}" allowedMethods="POST" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
                 <ee:set-variable variableName="new_course_id">attributes.uriParams.'new_course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-sections-id-crosslist-new-course-id doc:name="Section - Cross-list a section" doc:id="0930fa2a-c9e4-4e4a-8353-719b06c2ef5c" config-ref="Canvas_Config" idUriParam="#[vars.id]" newCourseIdUriParam="#[vars.new_course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:crosslist-section doc:name="Section - Cross-list a section" doc:id="669d2664-68e1-4850-af6c-c34afe86956c" id="#[vars.id]" new_course_id="#[vars.new_course_id]" correlationId="#[correlationId]">
+			<canvas:crosslist-section--body ><![CDATA[#[payload]]]></canvas:crosslist-section--body>
+		</canvas:crosslist-section>
     </flow>
     <flow name="get:\accounts:canvas-lms-api-config">
-        <canvas:get-accounts doc:name="Account - List accounts" doc:id="5d038685-2f5f-40c2-acd6-36bc5835fd47" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" />
+		<http:listener doc:name="Listener" doc:id="462b6ad6-a2b4-43ca-b7ca-d1de3ecdd4fd" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts" allowedMethods="GET" />
+		<canvas:list-accounts doc:name="Account - List accounts" doc:id="52a41a9f-7774-47fb-9554-19a6a0a1f735" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\sub_accounts:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="15cc7993-2bf2-4dad-b909-06510c99902a" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/sub_accounts" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-sub-accounts doc:name="Account - Get the sub-accounts of an account" doc:id="b3ab7ef9-6190-45f8-bd78-ecb16dde00a5" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-sub-accounts doc:name="Account - Get the sub-accounts of an account" doc:id="98af3691-1576-4694-b359-04531efc6672" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="0dce89f1-13b0-435b-8736-8285beb9277e" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{id}" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-id doc:name="Account - Get a single account" doc:id="db0c48a7-8c13-49f7-a72a-cfcac34a9d93" config-ref="Canvas_Config" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-account doc:name="Account - Get a single account" doc:id="07ddfb35-ce76-4990-8e87-d035f4b1334c" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="useflow" doc:id="808178ef-bcc9-4816-b734-b649724f78a9">
         <http:listener doc:name="Listener" doc:id="ba0a5746-0cda-42e4-8d0f-f4e336ef1c9b" config-ref="canvas-lms-api-httpListenerConfig" path="/v1/users/{user_id}/courses">
@@ -251,7 +350,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="user_id"><![CDATA[attributes.uriParams.'user_id']]></ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-users-user-id-courses doc:name="Course - List courses for a user" doc:id="7fee2a99-f891-4cdb-9f7e-cd6faf78ee3d" config-ref="Canvas_Config" userIdUriParam="11806455&amp;&amp;5" correlationIdHeader="#[correlationId]" />
+		<canvas:get-user-courses doc:name="Course - Get single user" doc:id="a26da97c-a40a-4b98-8738-77871c358127" user_id="#[vars.user_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\accounts\(account_id)\logins\(id):application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -260,7 +359,7 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:put-accounts-account-id-logins-id doc:name="Login - Edit a user login" doc:id="daba1f3f-a72e-4bdb-8ea9-39700d7a14da" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" idUriParam="#[vars.id]" />
+		<canvas:edit-user-login doc:name="Login - Edit a user login" doc:id="cc2b5dd6-9e35-4f21-b95f-3b9a1083dc5b" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\accounts\(account_id)\terms\(id):application\json:canvas-lms-api-config">
         <ee:transform doc:name="Transform Message">
@@ -269,186 +368,207 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:put-accounts-account-id-terms-id doc:name="Enrollment Terms - Update enrollment term" doc:id="02f73a0c-e7d4-4a00-9af0-4f8716e9a07f" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" idUriParam="#[vars.id]" />
+		<canvas:update-enrollment-term doc:name="Enrollment Terms - Update enrollment term" doc:id="10c1e982-8ef7-4e4d-b6bb-51ba90038e5a" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="put:\courses\(course_id)\enrollments\(id)\reactivate:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="d8cff16b-2c33-46a0-9db7-4c54311fe98f" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments/{id}/reactivate" allowedMethods="PUT" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:put-courses-course-id-enrollments-id-reactivate doc:name="Enrollment - Reactivate an enrollment" doc:id="c4b55cbf-c0fa-43c0-8ca6-f14ba3dc18c5" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]" />
+		<canvas:reactivate-enrollment doc:name="Enrollment - Reactivate an enrollment" doc:id="85cf8525-0f7a-4c5c-8e11-c6a0071bb4cb" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\accounts\(account_id)\terms\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="1e216e53-b0e2-431b-ad22-6511b5380807" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/terms/{id}" allowedMethods="DELETE" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:delete-accounts-account-id-terms-id doc:name="Enrollment Terms - Delete enrollment term" doc:id="4270209e-b32e-430c-8cfd-1ab36598ac70" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:delete-enrollment-term doc:name="Enrollment Terms - Delete enrollment term" doc:id="32aee6a4-48dd-47c5-aa27-11cc1fcb995f" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\courses\(course_id)\enrollments\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="75e2a88c-f407-418c-8e2a-f34338d11760" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments/{id}" allowedMethods="DELETE" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:delete-courses-course-id-enrollments-id doc:name="Enrollment - Conclude, deactivate, or delete an enrollment" doc:id="b98793f1-1f39-4fc8-8538-b1782c060603" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:conclude-enrollment doc:name="Enrollment - Conclude , deactivate , or delete an enrollment" doc:id="e2ed2e3e-52be-4d0b-8bf6-926d987a1e3b" course_id="#[vars.course_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="delete:\users\(user_id)\logins\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="5caf056c-360b-4eb9-a97b-c29c5656e401" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/logins/{id}" allowedMethods="DELETE" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:delete-users-user-id-logins-id doc:name="Login - Delete a user login" doc:id="055ffe6d-ec1f-474f-9a07-676282fc504b" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:delete-user-login doc:name="Login - Delete a user login" doc:id="6d9d29f4-f3a8-474f-9131-419a330f1a6d" user_id="#[vars.user_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\courses:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="1a0e73fe-9b26-4fa5-a59b-eb8c821b8da0" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/courses" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-courses doc:name="Account - List active courses in an account" doc:id="12bc9fc5-0c9a-4413-92a7-3c7a682a3a75" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-account-courses doc:name="Account - List active courses in an account" doc:id="cb3de3be-6da1-4bce-b997-67ac128b95f4" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\enrollments\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="d8c7cb45-4eae-40e8-8af0-9b019454a1c2" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/enrollments/{id}" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-enrollments-id doc:name="Enrollment - Get enrollment by ID" doc:id="e84ce50a-90c6-4cfb-844b-cee5ea49e734" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-enrollment-by-id doc:name="Enrollment - Get enrollment by ID" doc:id="e78320f9-636e-4fd1-a989-844a989034fb" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\roles:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="2a129b80-8d9c-4d31-b744-10ebc73f0570" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/roles" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-roles doc:name="Roles - List roles" doc:id="12c889f3-01d7-40b9-8683-b76086fe5e2e" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" accountIdUriParam="#[vars.account_id]" />
+		<canvas:list-roles doc:name="Roles - List roles" doc:id="23bbab1b-5f1e-4bda-af09-47cbe9fa4427" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\roles\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="9e659e41-9c3f-40a8-9c23-f27d8442c01a" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/roles/{id}" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-roles-id doc:name="Roles - Get a single role" doc:id="c3cfe15e-5cbc-4419-8530-700602328e40" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-role doc:name="Roles - Get a single role" doc:id="e653ebd5-82c5-485d-94b7-505a0ea79a46" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\terms:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="73ea7789-3e91-453a-ad92-92fcb68d1955" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/terms" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-terms doc:name="Enrollment Terms - List enrollment terms" doc:id="37fab65e-f44b-40b2-be57-b0d0c3a53801" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-enrollment-terms doc:name="Enrollment Terms - List enrollment terms" doc:id="3059e8e7-5b44-45d9-9e34-44b63599e816" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\accounts\(account_id)\terms\(id):canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="1a5ff022-9a12-40b8-81d2-aeb59005d815" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/terms/{id}" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-accounts-account-id-terms-id doc:name="Enrollment Terms - Retrieve enrollment term" doc:id="6e1c283d-ecdc-472e-9b22-e035a96af836" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" idUriParam="#[vars.id]" correlationIdHeader="#[correlationId]" />
+		<canvas:get-enrollment-term doc:name="Enrollment Terms - Retrieve enrollment term" doc:id="337cd60d-6428-4aca-9199-2f13e0267125" account_id="#[vars.account_id]" id="#[vars.id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\assignment_groups:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="04a16a28-d691-44a6-a15b-ff57dfff4482" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/assignment_groups" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-assignment-groups doc:name="Assignment Groups - List assignment groups" doc:id="0f28d1cd-e66c-422a-b4bf-35516c40cecb" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-assignment-groups doc:name="Assignment Groups - List assignment groups" doc:id="99515bbe-7d0d-4025-b3df-2e595d7bddc0" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\assignment_groups\(assignment_group_id)\assignments:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="0918168b-6178-44f3-adf1-9c22112e8911" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/assignment_groups/{assignment_group_id}/assignments" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
                 <ee:set-variable variableName="assignment_group_id">attributes.uriParams.'assignment_group_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-assignment-groups-assignment-group-id-assignments doc:name="Assignment - List assignments by assignment groups" doc:id="41b45794-d9de-4636-93f0-c3855599bbe4" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" assignmentGroupIdUriParam="#[vars.assignment_group_id]" />
+		<canvas:list-assignments-by-group doc:name="Assignment - List assignments by assignment groups" doc:id="116c2d83-da62-4177-ad12-874341d31be1" course_id="#[vars.course_id]" assignment_group_id="#[vars.assignment_group_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\assignments:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="f9237766-30cd-4194-a074-f63c2733c579" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/assignments" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-assignments doc:name="Assignment - List assignments" doc:id="18a8914b-f4a9-4787-8fcd-c80fd7290e17" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-assignments doc:name="Assignment - List assignments" doc:id="d6b6a0c4-4b97-4e8f-9c30-c58694bb1e89" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\enrollments:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="6b378115-20d8-4e41-ae30-ff6b237d1711" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-enrollments doc:name="Enrollment - List course enrollments" doc:id="0ac5b975-82c0-477e-8440-c6d45ed86de6" config-ref="Canvas_Config" correlationIdHeader="#[correlationId]" courseIdUriParam="#[vars.course_id]" />
+		<canvas:list-course-enrollments doc:name="Enrollment - List course enrollments" doc:id="3336880b-b170-4f1c-98bf-b95e9b3e8c62" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\courses\(course_id)\students\submissions:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="5ced95bc-7ae8-424c-a01f-9a3cc46cff13" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/students/submissions" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-courses-course-id-students-submissions doc:name="Submission - List submissions for multiple assignments" doc:id="feef3cdb-e456-4154-99f9-571a8eb16cde" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" groupedQueryParam="#[(isEmpty(attributes.queryParams.grouped))]" postToSisQueryParam="#[(isEmpty(attributes.queryParams.post_to_sis))]" stateBasedOnDateQueryParam="#[(isEmpty(attributes.queryParams.state_based_on_date))]"/>
+		<canvas:list-course-submissions doc:name="Submission - List submissions for multiple assignments" doc:id="c7780551-5ca9-49eb-9d95-d9fd0860444b" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\sections\(section_id)\enrollments:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="ce5702f2-270f-4ed5-8672-bf5023bc0dca" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{section_id}/enrollments" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="section_id">attributes.uriParams.'section_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-sections-section-id-enrollments doc:name="Enrollment - List section enrollments" doc:id="dc6d0829-e3ea-4483-8ff7-c8bd66fc7e78" config-ref="Canvas_Config" sectionIdUriParam="#[vars.section_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-section-enrollments doc:name="Enrollment - List section enrollments" doc:id="b30be8f4-f5fb-406f-aebc-7277b443eb3a" section_id="#[vars.section_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\sections\(section_id)\students\submissions:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="a1405b9d-3a12-4160-a4c6-52d25b988463" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{section_id}/students/submissions" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="section_id">attributes.uriParams.'section_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-sections-section-id-students-submissions doc:name="Submission - List submissions from course section" doc:id="0a3cee5a-4a13-4ae6-8ce4-8d0cdf2d50c7" config-ref="Canvas_Config" sectionIdUriParam="#[vars.section_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-section-submissions doc:name="Submission - List submission from course section" doc:id="658053ea-321b-4d3b-926b-1fe62a58903e" section_id="#[vars.section_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="get:\users\(user_id)\enrollments:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="5fb71fb1-0004-40d1-9b7e-a6e14b12d1bc" config-ref="canvas-lms-api-httpListenerConfig" path="/users/{user_id}/enrollments" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="user_id">attributes.uriParams.'user_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:get-users-user-id-enrollments doc:name="Enrollment - List enrollments of a user" doc:id="06c8a001-d407-44da-8b61-061cad0739cb" config-ref="Canvas_Config" userIdUriParam="#[vars.user_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-user-enrollments doc:name="Enrollment - List user enrollments" doc:id="a77805e7-c389-41eb-bb8e-f9f53e3f2466" user_id="#[vars.user_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\bulk_enrollment:application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="d93aac06-abaa-4823-8b34-45a2c5fbab68" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/bulk_enrollment" allowedMethods="POST" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-accounts-account-id-bulk-enrollment doc:name="Enrollment - Enroll multiple users to one or more courses" doc:id="2ebdcc84-d41c-4304-b0bc-b452afbc8de0" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:bulk-enroll-users doc:name="Enrollment - Enroll multiple users to one or more courses" doc:id="84a480d9-c23c-431d-aba6-b0190b3e5e48" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\logins:application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="a0fcf92f-f8ad-4f3a-aadc-ac122a46d012" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/logins" allowedMethods="POST" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-accounts-account-id-logins doc:name="Login - Create a user login" doc:id="0f81eb39-3854-4235-9755-2f0ef0670b43" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:create-user-login doc:name="Login - Create a user login" doc:id="af306ac0-456f-4965-a52d-41eccdd2a83a" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\accounts\(account_id)\terms:application\json:canvas-lms-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:listener doc:name="Listener" doc:id="7ed7657c-7063-4049-a6b5-2dbbbd98f391" config-ref="canvas-lms-api-httpListenerConfig" path="/accounts/{account_id}/terms" allowedMethods="POST" />
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="account_id">attributes.uriParams.'account_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-accounts-account-id-terms doc:name="Enrollment Terms - Create enrollment term" doc:id="19631b60-76e1-4f13-9c8b-b14db53984d9" config-ref="Canvas_Config" accountIdUriParam="#[vars.account_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:create-enrollment-term doc:name="Enrollment Terms - Create enrollment term" doc:id="efda6523-01c0-4a60-9726-b69ef1c67a3e" account_id="#[vars.account_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\courses\(course_id)\enrollments:application\json:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="7c2d33d8-98d2-4cf8-920b-6554c317a4df" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments">
+        <http:listener doc:name="Listener" doc:id="7c2d33d8-98d2-4cf8-920b-6554c317a4df" config-ref="canvas-lms-api-httpListenerConfig" path="/courses/{course_id}/enrollments" allowedMethods="POST">
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[%dw 2.0
 output application/json --- payload default error.description]]]></http:body>
@@ -459,10 +579,10 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="course_id">attributes.uriParams.'course_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-courses-course-id-enrollments doc:name="Enrollment - Enroll a user in a course" doc:id="62396ce1-1ace-48a8-a997-b4e7b4509a34" config-ref="Canvas_Config" courseIdUriParam="#[vars.course_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-course-enrollments doc:name="Enrollment - List course enrollments" doc:id="55220a12-f3e8-4a56-b97d-d44b5d9b01f5" course_id="#[vars.course_id]" correlationId="#[correlationId]"/>
     </flow>
     <flow name="post:\sections\(section_id)\enrollments:application\json:canvas-lms-api-config">
-        <http:listener doc:name="Listener" doc:id="c4213bb6-df19-4742-aec3-57c07e92151d" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{section_id}/enrollments">
+        <http:listener doc:name="Listener" doc:id="c4213bb6-df19-4742-aec3-57c07e92151d" config-ref="canvas-lms-api-httpListenerConfig" path="/sections/{section_id}/enrollments" allowedMethods="POST">
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[%dw 2.0
 output application/json --- payload default error.description]]]></http:body>
@@ -473,6 +593,6 @@ output application/json --- payload default error.description]]]></http:body>
                 <ee:set-variable variableName="section_id">attributes.uriParams.'section_id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <canvas:post-sections-section-id-enrollments doc:name="Enrollment - Enroll a user in a section" doc:id="97b69248-37f1-49f3-8cab-52225c1a1546" config-ref="Canvas_Config" sectionIdUriParam="#[vars.section_id]" correlationIdHeader="#[correlationId]" />
+		<canvas:list-section-enrollments doc:name="Enrollment - List section enrollments" doc:id="57278fb0-a868-4931-a11e-1e5c5542dc59" section_id="#[vars.section_id]" correlationId="#[correlationId]"/>
     </flow>
 </mule>

@@ -3,8 +3,8 @@ https:
   port: "8081"
   
 canvas:
-  token: "Bearer 7~VKBnJf6Qhk9mKHKY39mZ8w4TATRc6wcXRUH38JcvxEfZZHWhcvEGKX9vWhTY9vLV"
-  baseUri: "https://canvas.instructure.com/api/v1"
+  token: "15721~B4DcruuVWkL3TUFcLteuNBcLuuF7Wzn4eVGGUD8A348MVhVBDUQHvwEyMvZkwHZn"
+  baseUri: "https://salesforce.instructure.com/api/v1"
 
 sf:
   username: "aurosmit.sahoo@nexturn.comauro.edu"
