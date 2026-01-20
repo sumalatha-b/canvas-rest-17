@@ -64,7 +64,7 @@ payload.Canvas_Account_ID__c as Number]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="Canvas Request Logger" doc:id="d98f3f0e-3cd1-4fa2-94a7-99049403bd64" message="#[payload]"/>
-		<canvas:create-course doc:name="Course - Create a new course" doc:id="2c3170f5-d038-41ee-b57d-a010617f6767" account_id="#[vars.accountId]" correlationId="#[correlationId]"/>
+		<canvas:create-course doc:name="Course - Create a new course" doc:id="283fbe92-1e19-4a9d-88af-eecfbda4d073" config-ref="Canvas_config" account_id="#[vars.accountId]" correlationId="#[correlationId]"/>
 		<logger level="INFO" doc:name="Canvas Response Logger" doc:id="30fcb67c-4b92-4dae-81e5-d3d2a4a6024e" message="#[vars.createCourseResponse]" />
 		<ee:transform doc:name="Build Salesforce Update Payload" doc:id="3150a0a4-3339-48ce-a832-1bf66f7512db" >
 			<ee:message >
@@ -143,7 +143,7 @@ output application/json
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="Canvas Request Logger" doc:id="5e4ec1a5-d08f-4a11-8e83-de5c9eaabffd" message="#[payload]" />
-		<canvas:update-course doc:name="Course - Update a course" doc:id="3b74b5b2-c5fd-4796-861f-32d6f00dd78e" id="#[vars.id]" correlationId="#[correlationId]"/>
+		<canvas:update-course doc:name="Course - Update a course" doc:id="c8927672-1f96-4dff-ac77-4e884e357f91" config-ref="Canvas_config" id="#[vars.id]" correlationId="#[correlationId]"/>
 		<ee:transform doc:name="Canvas Response" doc:id="059095b5-c353-48c2-af48-51ed2844d915" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -169,7 +169,7 @@ payload]]></ee:set-payload>
 				<ee:set-variable variableName="id" ><![CDATA[payload.Canvas_Course_ID__c]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<canvas:delete-course doc:name="Course - Delete/Conclude a course" doc:id="ff5c3062-532e-44d0-a975-bd7a1cb2c585" id="#[vars.id]" event='#["Conclude"]' correlationId="#[correlationId]"/>
+		<canvas:delete-course doc:name="Course - Delete/Conclude a course" doc:id="65d4b2bd-04ff-44f7-9cb0-55fa45326896" config-ref="Canvas_config" id="#[vars.id]" event='#["delete"]' correlationId="#[correlationId]"/>
 		<ee:transform doc:name="canvasResponse" doc:id="0d74c3b5-dfb5-4976-ac9e-2098372c3f11" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
